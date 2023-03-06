@@ -8,22 +8,23 @@ import NotFound from "./components/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/register";
 import { ToastContainer } from "react-toastify";
+import CheckoutSucess from "./components/CheckoutSucess";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <ToastContainer />
-
-        <NavBar />
+        <NavBar /> <h1>Carousel</h1>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/not-found" element={<NotFound />} />
+          <Route path="/checkout-success" element={<CheckoutSucess />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <h1>Footer</h1>
       </BrowserRouter>
     </div>
   );

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import "./register.css";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../features/authSlice";
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const cart = useSelector((state) => state.cart);
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -43,29 +48,22 @@ const Register = () => {
         theme: "colored",
       });
     }
+
     const data = {
       name,
       email,
       password,
     };
-    try {
-      const res = await axios.post("http://localhost:5000/api/register", data);
-      if (res.status === 200) {
-        toast.success(`Registered Successfully`, {
-          position: "top-right",
-          autoClose: 2000,
-          theme: "colored",
-        });
-        navigate("/");
-      }
-    } catch (error) {
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 2000,
-        theme: "colored",
-      });
-    }
+    dispatch(registerUser(data));
   };
+
+  useEffect(() => {
+    if (token && cart.cartItems.length === 0) {
+      navigate("/", { replace: true });
+    } else if (token && cart.cartItems.length > 0) {
+      navigate("/cart", { replace: true });
+    }
+  }, [navigate, token, cart]);
 
   return (
     <div className="register__div">

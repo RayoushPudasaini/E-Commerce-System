@@ -19,21 +19,22 @@ const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {},
-  extraReducers: {
-    [productsFetch.pending]: (state, action) => {
-      //immer
-      state.status = "pending";
-    },
-    [productsFetch.fulfilled]: (state, action) => {
-      //immer
-      state.status = "success";
-      state.items = action.payload;
-    },
-    [productsFetch.rejected]: (state, action) => {
-      //immer
-      state.status = "rejected";
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(productsFetch.pending, (state, action) => {
+        //immer
+        state.status = "pending";
+      })
+      .addCase(productsFetch.fulfilled, (state, action) => {
+        //immer
+        state.status = "success";
+        state.items = action.payload;
+      })
+      .addCase(productsFetch.rejected, (state, action) => {
+        //immer
+        state.status = "rejected";
+        state.error = action.payload;
+      });
   },
 });
 

@@ -107,10 +107,14 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.product img:hover{
+  transform: scale(1.1);
+  transition: all 0.5s ease-in-out;
+}
 .product h3{
   font-size: 25px;
   font-weight: 400;
-
 }
 
 .product .details{
@@ -271,6 +275,12 @@
   border: none;
   outline: none;
   cursor: pointer;
+}
+
+.cart-checkout .cart-login{
+  background-color: yellow;
+  color: black;
+  
 }
 .continue-shopping,
 .start-shopping {

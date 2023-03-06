@@ -36,7 +36,14 @@ router.post("/", async (req, res) => {
 
     const token = generateAuthToken(user);
 
-    res.json({ message: "success", token, user });
+    const userData = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    };
+
+    res.send({ message: "success", user: userData, token });
   } catch (error) {
     console.log(error);
   }

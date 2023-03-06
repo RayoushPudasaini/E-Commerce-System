@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
   try {
     if (error)
       return res.status(400).json({ message: error.details[0].message });
-    let user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({ email: req.body.email }).exec();
     if (!user) return res.status(400).json({ message: "Invalid email.." });
 
     const validPassword = await bcrypt.compare(
@@ -27,7 +27,14 @@ router.post("/", async (req, res) => {
 
     const token = generateAuthToken(user);
 
-    res.send({ message: "success", user, token });
+    const userData = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    };
+
+    res.send({ message: "success", user: userData, token });
   } catch (error) {
     console.log(error);
     throw new Error("Something Went Wrong");

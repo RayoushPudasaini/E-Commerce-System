@@ -1,33 +1,32 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../features/cartSlice";
-import { useGetAllProductsQuery } from "../features/productsApi";
 
 const Home = () => {
-  const { data, error, isLoading } = useGetAllProductsQuery();
+  const { items: data, status } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // console.log({data})
+  // const { data, error, isLoading } = useGetAllProductsQuery();
+
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
-    console.log("Redirecting to /cart...");
     navigate("/cart");
   };
   return (
     <div className="home-container">
-      {isLoading ? (
-        <p>Loading....</p>
-      ) : error ? (
-        <p>An error occured...</p>
-      ) : (
+      {status === "success" ? (
         <>
           <h2>New Arrivals</h2>
           <div className="products">
             {data?.map((product) => (
               <div key={product.id} className="product">
                 <h3>{product.name}</h3>
-                <img src={product.image} alt={product.name} />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="product_img"
+                />
 
                 <div className="details">
                   <span>{product.desc}</span>
@@ -41,6 +40,10 @@ const Home = () => {
             ))}
           </div>
         </>
+      ) : status === "pending" ? (
+        <p>Loading...</p>
+      ) : (
+        <p>Unexpected error occured...</p>
       )}
     </div>
   );

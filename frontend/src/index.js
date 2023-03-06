@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import App from "./App";
-
+import { loadUser } from "./features/authSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 
@@ -25,7 +25,6 @@ const store = configureStore({
 store.dispatch(productsFetch());
 store.dispatch(getTotals());
 store.dispatch(loadUser(null));
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
