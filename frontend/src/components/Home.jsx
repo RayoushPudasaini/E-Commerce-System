@@ -1,45 +1,58 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../features/cartSlice";
+import Slider from "react-slick";
 
 const Home = () => {
-  const { items: data, status } = useSelector((state) => state.products);
+  const { items: data, status } = useSelector((state) => state.products); //uses use selector to get the data from the store
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const { data, error, isLoading } = useGetAllProductsQuery();
-
   const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
+    dispatch(addToCart(product)); //used to dispatch add to cart action
+
     navigate("/cart");
   };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+  };
+
   return (
     <div className="home-container">
+      <h2>New Arrivals</h2>
       {status === "success" ? (
-        <>
-          <h2>New Arrivals</h2>
-          <div className="products">
-            {data?.map((product) => (
-              <div key={product.id} className="product">
-                <h3>{product.name}</h3>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="product_img"
-                />
+        <Slider {...settings}>
+          {data?.map((product) => (
+            <div key={product.id} className="product">
+              <h3>{product.name}</h3>
+              <img
+                src={product.image}
+                alt={product.name}
+                className="product_img"
+              />
 
-                <div className="details">
-                  <span>{product.desc}</span>
-                  <span className="price">${product.price}</span>
-                </div>
-
-                <button onClick={() => handleAddToCart(product)}>
-                  Add to Cart
-                </button>
+              <div className="details">
+                <span>{product.desc}</span>
+                <span className="price">${product.price}</span>
               </div>
-            ))}
-          </div>
-        </>
+
+              <button onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </Slider>
       ) : status === "pending" ? (
         <p>Loading...</p>
       ) : (

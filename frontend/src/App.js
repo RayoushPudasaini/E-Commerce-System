@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/register";
+
 import { ToastContainer } from "react-toastify";
 import CheckoutSucess from "./components/CheckoutSucess";
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/checkout-success" element={<CheckoutSucess />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <h1>Footer</h1>

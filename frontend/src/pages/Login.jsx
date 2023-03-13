@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/authSlice";
+
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,6 +58,15 @@ const Login = () => {
           placeholder="Password"
         />
         <button type="submit">Login</button>
+        <div className="gap-top">
+          <h5> Not Register ? </h5>
+        </div>
+        <button
+          onClick={() => navigate("/register")}
+          className="button-register"
+        >
+          Register
+        </button>
       </form>
     </div>
   );
