@@ -1,3 +1,5 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -14,16 +16,24 @@ import Dashboard from "./components/admin/Dashboard";
 import Products from "./components/admin/Products";
 import Summary from "./components/admin/Summary";
 import CreateProduct from "./components/admin/CreateProduct";
+import Carousel from "./components/Carousel";
+import { useSelector } from "react-redux";
+import Footer from "./components/Footer";
+import ViewProduct from "./pages/ViewProduct";
 
 function App() {
+  const auth = useSelector((state) => state.auth);
+
   return (
     <div className="App">
       <BrowserRouter>
         <ToastContainer />
-        <NavBar /> <h1>Carousel</h1>
+        <NavBar />
+        {!auth.isAdmin && <Carousel />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/product/:id" element={<ViewProduct />} />
           <Route path="/checkout-success" element={<CheckoutSucess />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -35,7 +45,7 @@ function App() {
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <h1>Footer</h1>
+        <Footer />
       </BrowserRouter>
     </div>
   );

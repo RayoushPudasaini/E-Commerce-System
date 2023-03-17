@@ -1,8 +1,5 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../features/cartSlice";
 import Slider from "react-slick";
 
@@ -36,11 +33,13 @@ const Home = () => {
           {data?.map((product) => (
             <div key={product.id} className="product">
               <h3>{product.name}</h3>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="product_img"
-              />
+              <Link to={`/product/${product.id}`}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="product_img"
+                />
+              </Link>
 
               <div className="details">
                 <span>{product.desc}</span>

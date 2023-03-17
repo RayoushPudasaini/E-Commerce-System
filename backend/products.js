@@ -6,14 +6,17 @@ const products = [
     price: 999,
     image:
       "https://res.cloudinary.com/danpzdlik/image/upload/v1677598431/images/nike_retro_t2pidp.png",
+    brand: "Nike",
   },
   {
     id: 2,
     name: "Nike Air vaporMax",
-    desc: "Feel classy ",
+    desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. ",
     price: 699,
     image:
       "https://res.cloudinary.com/danpzdlik/image/upload/v1677598440/images/vapor_max_ippioh.png",
+
+    brand: "Nike",
   },
   {
     id: 3,
@@ -22,6 +25,7 @@ const products = [
     price: 399,
     image:
       "https://res.cloudinary.com/danpzdlik/image/upload/v1677598442/images/goldstar_eysk4v.jpg",
+    brand: "Goldstar",
   },
   {
     id: 4,
@@ -30,6 +34,7 @@ const products = [
     price: 399,
     image:
       "https://res.cloudinary.com/danpzdlik/image/upload/v1677599205/images/4_fszcyc.jpg",
+    brand: "Goldstar",
   },
   {
     id: 5,
@@ -38,6 +43,7 @@ const products = [
     price: 399,
     image:
       "https://res.cloudinary.com/danpzdlik/image/upload/v1677599264/images/2_ur5tr7.jpg",
+    brand: "Goldstar",
   },
 ];
 

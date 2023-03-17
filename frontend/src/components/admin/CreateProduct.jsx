@@ -1,8 +1,15 @@
-import { useState, PrimaryButton } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { productsCreate } from "../../features/productsSlice";
+
+import { PrimaryButton } from "./CommonStyled";
+
 import styled from "styled-components";
 
 const CreateProduct = () => {
-  const [productImg, setProductImg] = useState();
+  const dispatch = useDispatch();
+
+  const [productImg, setProductImg] = useState(null);
   const [name, setName] = useState();
   const [brand, setBrand] = useState();
   const [price, setPrice] = useState();
@@ -10,6 +17,7 @@ const CreateProduct = () => {
 
   const handleProductImageUpload = (e) => {
     const file = e.target.files[0];
+    TransformFile(file);
   };
   const TransformFile = (file) => {
     const reader = new FileReader();
@@ -24,9 +32,22 @@ const CreateProduct = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(
+      productsCreate({
+        name,
+        brand,
+        price,
+        desc,
+        image: productImg,
+      })
+    );
+  };
   return (
     <StyledCreateProduct>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit}>
         <h3>Create a Product </h3>
         <input
           type="file"
@@ -64,7 +85,7 @@ const CreateProduct = () => {
       <ImagePreview>
         {productImg ? (
           <>
-            <img src={productImg} alt="product img!" />
+            <img src={productImg} alt="product img " />
           </>
         ) : (
           <p>Image preview will appear here !</p>
