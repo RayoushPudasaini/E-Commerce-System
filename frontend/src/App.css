@@ -375,6 +375,20 @@
   align-items: center;
 }
 
+/* Admin */
+.link-active {
+  color:#4b70e2;
+
+}
+.link-inactive{
+  color:rgb(97, 97, 97);
+
+}
+
+
+
+
+
 /* Responsive */
 
 @media (max-width: 665px) {

@@ -10,6 +10,10 @@ import Register from "./pages/register";
 
 import { ToastContainer } from "react-toastify";
 import CheckoutSucess from "./components/CheckoutSucess";
+import Dashboard from "./components/admin/Dashboard";
+import Products from "./components/admin/Products";
+import Summary from "./components/admin/Summary";
+import CreateProduct from "./components/admin/CreateProduct";
 
 function App() {
   return (
@@ -23,7 +27,12 @@ function App() {
           <Route path="/checkout-success" element={<CheckoutSucess />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/:admin" element={<Dashboard />}>
+            <Route path="Products" element={<Products />} />
+            <Route path="Create-product" element={<CreateProduct />} />
 
+            <Route path="Summary" element={<Summary />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
         <h1>Footer</h1>

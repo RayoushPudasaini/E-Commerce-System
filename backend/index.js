@@ -6,6 +6,7 @@ const login = require("./routes/login");
 const register = require("./routes/register");
 const connectDb = require("./config/connectDB");
 const stripe = require("./routes/stripe");
+const productsRoute = require("./routes/products");
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api/register", register);
 app.use("/api/login", login);
 app.use("/api/stripe", stripe);
+app.use("/api/products", productsRoute);
 
 app.get("/products", (req, res) => {
   res.json(products);

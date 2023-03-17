@@ -8,6 +8,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const { cartTotalQuantity } = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
+
   // console.log(auth, "auth");
 
   return (
@@ -35,8 +36,9 @@ const NavBar = () => {
 
       {auth._id ? (
         <button
-          onClick={() => {
+          onClick={(handleLogout) => {
             dispatch(logoutUser(null));
+
             toast.warning("Logged out!", {
               position: "top-right",
               autoClose: 2000,
@@ -50,6 +52,7 @@ const NavBar = () => {
         <div className="auth-links">
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
+          <Link to="/admin/Summary">Admin</Link>
         </div>
       )}
     </nav>
