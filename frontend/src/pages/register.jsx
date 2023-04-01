@@ -8,28 +8,22 @@ import { registerUser } from "../features/authSlice";
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
+  const { token, isAdmin } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
 
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  function handleNameChange(event) {
-    setName(event.target.value);
-  }
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-  }
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
-  }
-
-  function handleConfirmPasswordChange(event) {
-    setConfirmPassword(event.target.value);
-  }
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const { name, email, password, confirmPassword } = formData;
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value.trim(),
+    });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,12 +52,14 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (token && cart.cartItems.length === 0) {
+    if (token && !isAdmin && cart.cartItems.length === 0) {
       navigate("/", { replace: true });
-    } else if (token && cart.cartItems.length > 0) {
+    } else if (token && !isAdmin && cart.cartItems.length > 0) {
       navigate("/cart", { replace: true });
+    } else if (token && isAdmin) {
+      navigate("/admin/summary", { replace: true });
     }
-  }, [navigate, token, cart]);
+  }, [navigate, token, cart, isAdmin]);
 
   return (
     <div className="register__div">
@@ -71,28 +67,32 @@ const Register = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          onChange={handleNameChange}
+          onChange={handleChange}
           placeholder="Full Name"
           value={name}
+          name="name"
         />
         <input
           type="email"
-          onChange={handleEmailChange}
+          onChange={handleChange}
           placeholder="E-mail"
           value={email}
+          name="email"
         />
 
         <input
           type="password"
-          onChange={handlePasswordChange}
+          onChange={handleChange}
           placeholder="Password"
           value={password}
+          name="password"
         />
         <input
           type="password"
-          onChange={handleConfirmPasswordChange}
+          onChange={handleChange}
           placeholder="Confirm password"
           value={confirmPassword}
+          name="confirmPassword"
         />
         <button type="submit">Register</button>
       </form>

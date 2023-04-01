@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { url } from "../features/api";
+import { setHeaders, url } from "../features/api";
+
+import ToastAlert from "../components/common/ToastAlert";
 
 const initialState = {
   items: [],
@@ -12,9 +14,13 @@ const initialState = {
 
 export const productsFetch = createAsyncThunk(
   "products/productsFetch",
-  async () => {
-    const response = await axios.get("http://localhost:5000/products");
-    return response?.data;
+  async (rejectWithValue) => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/products");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -25,8 +31,6 @@ export const getProductById = createAsyncThunk(
       const response = await axios.get(`${url}/products/find/${id}`);
       return response.data;
     } catch (error) {
-      console.log(error);
-
       return rejectWithValue(error.response.data);
     }
   }
@@ -34,10 +38,25 @@ export const getProductById = createAsyncThunk(
 
 export const productsCreate = createAsyncThunk(
   "products/productsCreate",
-  async (values) => {
-    const response = await axios.post(`${url}/products`, values);
+  async ({ data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/products`, data, setHeaders());
+      if (response.status === 200) {
+        ToastAlert({
+          type: "success",
+          message: "Product created successfully",
+        });
+      }
+      return response.data;
+      // setSuccess(true);
+    } catch (error) {
+      ToastAlert({
+        type: "error",
+        message: error.response.data.message,
+      });
 
-    return response.data;
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -83,6 +102,9 @@ const productsSlice = createSlice({
         //immer
         state.createStatus = "success";
         state.items.push(action.payload);
+        setTimeout(() => {
+          window.location.href = "/admin/create-product";
+        }, 3000);
       })
       .addCase(productsCreate.rejected, (state, action) => {
         //immer

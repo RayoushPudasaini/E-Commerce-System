@@ -9,7 +9,7 @@ const ViewProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { item, status } = useSelector((state) => state.products);
+  const { item, status } = useSelector((state) => state?.products);
   //   console.log({ item });
   useEffect(() => {
     dispatch(getProductById(id));
@@ -33,7 +33,7 @@ const ViewProduct = () => {
       {status === "success" && (
         <div className="product-description">
           <div className="product-image">
-            <img src={image} alt={name} />
+            <img src={image?.url} alt={name} />
           </div>
           <div
             className="product-details"

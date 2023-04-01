@@ -8,7 +8,7 @@ const Products = () => {
     <>
       <AdminHeaders>
         Products
-        <PrimaryButton onClick={() => navigate("/admin/Create-product")}>
+        <PrimaryButton onClick={() => navigate("/admin/create-product")}>
           Create
         </PrimaryButton>
       </AdminHeaders>

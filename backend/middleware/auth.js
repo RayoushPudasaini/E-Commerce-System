@@ -1,16 +1,18 @@
 const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
-  const token = req.header("x-auth-token");
-  if (!token)
-    return res.status(401).send("Access denied. Not authenticated...");
   try {
+    const token = req.header("x-auth-token");
+    if (!token)
+      return res.status(401).send("Access denied. Not authenticated...");
+
     const jwtSecretKey = process.env.JWT_SECRET_KEY;
     const decoded = jwt.verify(token, jwtSecretKey);
 
     req.user = decoded;
     next();
-  } catch (ex) {
+  } catch (err) {
+    console.log(err);
     res.status(400).send("Invalid auth token...");
   }
 };

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
 import { logoutUser } from "../features/authSlice";
@@ -8,6 +8,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const { cartTotalQuantity } = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   // console.log(auth, "auth");
 
@@ -36,32 +37,70 @@ const NavBar = () => {
         </Link>
       )}
 
-      {auth._id ? (
-        <button
-          onClick={(handleLogout) => {
-            dispatch(logoutUser(null));
-
-            toast.warning("Logged out!", {
-              position: "top-right",
-              autoClose: 2000,
-              theme: "colored",
-            });
+      {auth._id && auth.token ? (
+        <div
+          className="auth-links "
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: `${auth.isAdmin ? "8.5rem" : "4rem"}`,
           }}
         >
-          Logout
-        </button>
+          <button
+            onClick={() => {
+              dispatch(logoutUser(null));
+
+              toast.warning("Logged out!", {
+                position: "top-right",
+                autoClose: 2000,
+                theme: "colored",
+              });
+              navigate("/", { replace: true });
+            }}
+            style={{
+              background: "rgb(77, 140, 174)",
+              padding: "0.4rem 0.7rem",
+              border: "none",
+              borderRadius: "0.2rem",
+              cursor: "pointer",
+              outline: "none",
+              color: "#fff",
+            }}
+          >
+            Logout
+          </button>
+          {auth.isAdmin && (
+            <Link
+              style={{
+                background: "rgb(77, 140, 174)",
+                padding: "0.4rem 0.7rem",
+                border: "none",
+                borderRadius: "0.2rem",
+                cursor: "pointer",
+                outline: "none",
+                color: "#fff",
+                fontSize: "0.8rem",
+                boxShadow: "0 0 0.5rem rgba(0,0,0,0.2)",
+                fontWeight: "600",
+              }}
+              to="/admin/Summary"
+            >
+              Admin
+            </Link>
+          )}
+        </div>
       ) : (
         <div
           className="auth-links "
           style={{
             display: "flex",
             justifyContent: "space-between",
-            width: "180px",
+            width: "8rem",
           }}
         >
           <Link to="/login">Login</Link>
           <Link to="/register">Register</Link>
-          <Link to="/admin/Summary">Admin</Link>
         </div>
       )}
     </nav>

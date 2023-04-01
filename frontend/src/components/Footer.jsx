@@ -49,16 +49,16 @@ const Footer = () => {
               <h4>online shop</h4>
               <ul>
                 <li>
-                  <Link to="/">watch</Link>
+                  <Link to="/">NIKE</Link>
                 </li>
                 <li>
-                  <Link to="/">bag</Link>
+                  <Link to="/">SNEAKERS</Link>
                 </li>
                 <li>
-                  <Link to="/">shoes</Link>
+                  <Link to="/">VANS</Link>
                 </li>
                 <li>
-                  <Link to="/">dress</Link>
+                  <Link to="/">GOLDSTAR</Link>
                 </li>
               </ul>
             </div>

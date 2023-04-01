@@ -1,0 +1,26 @@
+.checkout-success {
+  text-align: center;
+  padding: 50px;
+}
+
+.checkout-success h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.checkout-success p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.checkout-success button {
+  background-color: blue;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  margin-top: 20px;
+  cursor: pointer;
+  cursor: hover;
+}

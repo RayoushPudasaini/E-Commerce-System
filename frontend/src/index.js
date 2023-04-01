@@ -10,6 +10,8 @@ import productsReducer, { productsFetch } from "./features/productsSlice";
 import { productsApi } from "./features/productsApi";
 import cartReducer, { getTotals } from "./features/cartSlice";
 import authReducer from "./features/authSlice";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const store = configureStore({
   reducer: {

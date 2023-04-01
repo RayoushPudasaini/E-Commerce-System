@@ -13,6 +13,7 @@ const PayButton = ({ cartItems }) => {
         userId: user._id,
       })
       .then((res) => {
+        // console.log("res.data", res);
         if (res.data.url) {
           window.location.href = res.data.url;
         }

@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const token = useSelector((state) => state.auth.token);
+  const { token, isAdmin } = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,12 +39,14 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (token && cart.cartItems.length === 0) {
+    if (token && !isAdmin && cart.cartItems.length === 0) {
       navigate("/", { replace: true });
-    } else if (token && cart.cartItems.length > 0) {
+    } else if (token && !isAdmin && cart.cartItems.length > 0) {
       navigate("/cart", { replace: true });
+    } else if (token && isAdmin) {
+      navigate("/admin/summary", { replace: true });
     }
-  }, [navigate, token, cart]);
+  }, [navigate, token, cart, isAdmin]);
 
   return (
     <div className="login__div">

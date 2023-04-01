@@ -1,46 +1,24 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../features/cartSlice";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import AllProducts from "./AllProducts";
 import "./customStyles.css";
 
-const Home = () => {
-  const { items: data, status } = useSelector((state) => state.products);
+const AllProducts = ({ data, status }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    window.dispatchEvent(new Event("resize"));
-  }, []);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
     navigate("/cart");
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    cssEase: "linear",
-    indicators: true,
-    arrows: true,
-  };
-
   return (
-    <section className="home-container">
-      <h2>New Arrivals</h2>
+    <section>
+      <h2>All Products</h2>
       {status === "success" ? (
-        <Slider {...settings}>
-          {data?.slice(0, 4)?.map((product) => (
+        <div className="all-products ">
+          {data?.map((product) => (
             <div key={product._id} className="product">
               <h3>{product.name}</h3>
               <Link to={`/product/${product._id}`}>
@@ -61,19 +39,14 @@ const Home = () => {
               </button>
             </div>
           ))}
-        </Slider>
+        </div>
       ) : status === "pending" ? (
         <p>Loading...</p>
       ) : (
         <p>Unexpected error occurred...</p>
       )}
-      <AllProducts
-        data={data}
-        status={status}
-        className="all-products-container"
-      />
     </section>
   );
 };
 
-export default Home;
+export default AllProducts;

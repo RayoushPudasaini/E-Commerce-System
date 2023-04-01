@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const Stripe = require("stripe");
+const { Order } = require("../models/order");
 
 const stripe = Stripe(process.env.STRIPE_KEY);
 
@@ -11,7 +12,6 @@ router.post("/create-checkout-session", async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.userId,
-      cart: JSON.stringify(req.body.cartItems),
     },
   });
   const line_items = req.body.cartItems.map((item) => {
@@ -20,7 +20,7 @@ router.post("/create-checkout-session", async (req, res) => {
         currency: "usd",
         product_data: {
           name: item.name,
-          images: [item.image],
+          images: [item.image.url],
           description: item.desc,
           metadata: {
             id: item.id,
@@ -64,14 +64,12 @@ router.post("/create-checkout-session", async (req, res) => {
 });
 
 //create order
-const createOrder = async (customer, data) => {
-  const Items = JSON.parse(customer.metadata.cart);
-
+const createOrder = async (customer, data, lineItems) => {
   const newOrder = new Order({
     userId: customer.metadata.userId,
     customerId: data.customer,
     paymentIntentId: data.payment_intent,
-    products: Items,
+    products: lineItems.data,
     subtotal: data.amount_subtotal,
     total: data.amount_total,
     shipping: data.customer_details,
@@ -80,6 +78,8 @@ const createOrder = async (customer, data) => {
 
   try {
     const savedOrder = await newOrder.save();
+
+    // res.status(200).json(savedOrder);
     console.log("Processed order:", savedOrder);
   } catch (err) {
     console.log(err.message);
@@ -124,6 +124,16 @@ router.post(
       stripe.customers
         .retrieve(data.customer)
         .then((customer) => {
+          stripe.chekout.sessions.listLineItems(
+            data.id,
+            {},
+            function (err, lineItems) {
+              console.log("line_items", lineItems);
+
+              createOrder(customer, data, lineItems);
+            }
+          );
+
           createOrder(customer, data);
         })
         .catch((err) => {
@@ -132,7 +142,7 @@ router.post(
     }
 
     // Return a 200 response to acknowledge receipt of the event
-    response.send(200).send();
+    response.send(200).send("OK");
   }
 );
 

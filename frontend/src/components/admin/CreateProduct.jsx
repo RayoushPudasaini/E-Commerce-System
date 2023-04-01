@@ -1,49 +1,77 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { productsCreate } from "../../features/productsSlice";
+import Resizer from "react-image-file-resizer";
 
 import { PrimaryButton } from "./CommonStyled";
 
 import styled from "styled-components";
+import ToastAlert from "../common/ToastAlert";
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
 
   const [productImg, setProductImg] = useState(null);
-  const [name, setName] = useState();
-  const [brand, setBrand] = useState();
-  const [price, setPrice] = useState();
-  const [desc, setDesc] = useState();
+  const [name, setName] = useState("");
+  const [brand, setBrand] = useState("");
+  const [price, setPrice] = useState("");
+  const [desc, setDesc] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleProductImageUpload = (e) => {
-    const file = e.target.files[0];
-    TransformFile(file);
-  };
-  const TransformFile = (file) => {
-    const reader = new FileReader();
-
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setProductImg(reader.result);
-      };
-    } else {
-      setProductImg("");
+    try {
+      const file = e.target.files[0];
+      if (file.size > 1000000) {
+        e.target.value = null;
+        ToastAlert({
+          type: "error",
+          message: "Please upload an image smaller than 1MB. !",
+          position: "top-center",
+        });
+        return;
+      }
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        "JPEG",
+        100,
+        0,
+        (uri) => {
+          setProductImg(uri);
+        },
+        "base64",
+        200,
+        200
+      );
+    } catch (err) {
+      ToastAlert({
+        type: "error",
+        message: err.message,
+        position: "top-center",
+      });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(
-      productsCreate({
-        name,
-        brand,
-        price,
-        desc,
-        image: productImg,
-      })
-    );
+    // if (!productImg)
+    //   return ToastAlert({ type: "error", message: "Image is required" });
+
+    // if (!name || !brand || !price || !desc)
+    //   return ToastAlert({ type: "error", message: "All fields are required" });
+
+    const priceN = parseInt(price);
+    const data = {
+      name,
+      brand,
+      price: priceN,
+      desc,
+      image: productImg,
+    };
+    const test = dispatch(productsCreate({ data, setSuccess }));
+    console.log(test);
   };
   return (
     <StyledCreateProduct>
@@ -63,19 +91,16 @@ const CreateProduct = () => {
         </select>
         <input
           type="text"
-          required
           placeholder="Name"
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          type="text"
-          required
+          type="number"
           placeholder="Price"
           onChange={(e) => setPrice(e.target.value)}
         />
         <input
           type="text"
-          required
           placeholder="Short Description"
           onChange={(e) => setDesc(e.target.value)}
         />
@@ -99,18 +124,22 @@ export default CreateProduct;
 
 const StyledCreateProduct = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: flex-start;
 `;
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  max-width: 400px;
   margin-top: 2rem;
+  justify-content: center;
+  align-items: flex-start;
   select,
   input {
     padding: 7px;
     min-height: 30px;
+    width: 100%;
     outline: none;
     border-radius: 5px;
     border: 1px solid rgb(182, 182, 182);
@@ -125,10 +154,11 @@ const StyledForm = styled.form`
 `;
 
 const ImagePreview = styled.div`
-  margin: 2rem 0 2rem 2rem;
+  margin: 1.8rem 0 2rem 2rem;
   padding: 2rem;
   border: 1px solid rgb(183, 183, 183);
   max-width: 300px;
+  height: 377px;
   width: 100%;
   display: flex;
   align-items: center;
