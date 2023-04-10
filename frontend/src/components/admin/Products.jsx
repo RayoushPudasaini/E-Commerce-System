@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { AdminHeaders, PrimaryButton } from "./CommonStyled";
+import ProductsList from "./list/ProductsList";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Products = () => {
           Create
         </PrimaryButton>
       </AdminHeaders>
-
+      <ProductsList />
       <Outlet />
     </>
   );

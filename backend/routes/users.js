@@ -35,4 +35,25 @@ router.get("/stats", isAdmin, async (req, res) => {
   }
 });
 
+//get all users
+router.get("/", auth, isAdmin, async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password");
+    res.status(200).json(users);
+  } catch (err) {
+    res.json(err.message);
+  }
+});
+
+//delete user
+router.delete("/:id", auth, isAdmin, async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({ user, message: "User deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.json(err.message);
+  }
+});
+
 module.exports = router;

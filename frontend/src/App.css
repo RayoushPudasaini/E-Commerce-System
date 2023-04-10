@@ -36,6 +36,19 @@ html {
   align-items: center;
 }
 
+.nav-icons {
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  margin-right: 1rem;
+}
+
+.user-icon {
+  font-size: 1.5rem;
+  margin-left: auto;
+}
+
 .cart-quantity {
   display: flex;
   align-items: center;

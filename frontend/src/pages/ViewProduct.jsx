@@ -10,6 +10,7 @@ const ViewProduct = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { item, status } = useSelector((state) => state?.products);
+  const { isAdmin } = useSelector((state) => state?.auth);
   //   console.log({ item });
   useEffect(() => {
     dispatch(getProductById(id));
@@ -35,15 +36,14 @@ const ViewProduct = () => {
           <div className="product-image">
             <img src={image?.url} alt={name} />
           </div>
-          <div
-            className="product-details"
-            onClick={() => handleAddToCart(item)}
-          >
+          <div className="product-details">
             <h2>{name}</h2>
             <p>{desc}</p>
             <p>Brand: {brand}</p>
             <p>Price: ${price}</p>
-            <button>Add to Cart</button>
+            {!isAdmin && (
+              <button onClick={() => handleAddToCart(item)}>Add to Cart</button>
+            )}
           </div>
         </div>
       )}

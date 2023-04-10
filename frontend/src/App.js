@@ -21,6 +21,12 @@ import { useSelector } from "react-redux";
 import Footer from "./components/Footer";
 import ViewProduct from "./pages/ViewProduct";
 import Orders from "./components/admin/Orders";
+import ProductsList from "./components/admin/list/ProductsList";
+import Users from "./components/admin/Users";
+
+import Product from "./components/Details/Product";
+import UserProfile from "./components/Details/UserProfile";
+import Order from "./components/Details/Order";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -47,11 +53,19 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           {isAdmin && token && (
+            <Route path="product/:id" element={<Product />}>
+              <Route path="order/:id" element={<Order />} />
+              <Route path="user/:id" element={<UserProfile />} />
+            </Route>
+          )}
+          {isAdmin && token && (
             <Route path="/:admin" element={<Dashboard />}>
               <Route path="products" element={<Products />} />
+              {/* <Route path="products-list" element={<ProductsList />} /> */}
               <Route path="orders" element={<Orders />} />
               <Route path="create-product" element={<CreateProduct />} />
               <Route path="Summary" element={<Summary />} />
+              <Route path="users" element={<Users />} />
             </Route>
           )}
 

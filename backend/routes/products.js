@@ -3,6 +3,7 @@ const { Product } = require("../models/Product");
 const { auth, isUser, isAdmin } = require("../middleware/auth");
 const router = require("express").Router();
 const cloudinary = require("../utils/cloudinary");
+
 //CREATE
 
 router.post("/", async (req, res) => {
@@ -39,10 +40,10 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", isAdmin, async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.status(200).send("Product has been deleted...");
+    const product = await Product.findByIdAndDelete(req.params.id).exec();
+    res.status(200).json({ message: "Product has been deleted...", product });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json(error.message);
   }
 });
 

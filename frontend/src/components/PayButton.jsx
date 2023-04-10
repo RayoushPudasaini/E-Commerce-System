@@ -5,9 +5,9 @@ import { url } from "../features/api";
 const PayButton = ({ cartItems }) => {
   const user = useSelector((state) => state.auth);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     console.log("cartItems", cartItems);
-    axios
+    await axios
       .post(`${url}/stripe/create-checkout-session`, {
         cartItems,
         userId: user._id,
