@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { url } from "../features/api";
+import { clearCart } from "../features/cartSlice";
 
 const PayButton = ({ cartItems }) => {
   const user = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleCheckout = async () => {
-    console.log("cartItems", cartItems);
     await axios
       .post(`${url}/stripe/create-checkout-session`, {
         cartItems,
@@ -17,6 +18,9 @@ const PayButton = ({ cartItems }) => {
         if (res.data.url) {
           window.location.href = res.data.url;
         }
+        // after successful payment, clear cart
+
+        dispatch(clearCart());
       })
       .catch((err) => console.log(err));
   };

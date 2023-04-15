@@ -17,6 +17,8 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log("cartItems", cart.cartItems);
+
   useEffect(() => {
     dispatch(getTotals());
   }, [cart, dispatch]);

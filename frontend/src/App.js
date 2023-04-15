@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 import Footer from "./components/Footer";
 import ViewProduct from "./pages/ViewProduct";
 import Orders from "./components/admin/Orders";
-import ProductsList from "./components/admin/list/ProductsList";
 import Users from "./components/admin/Users";
 
 import Product from "./components/Details/Product";
@@ -29,6 +28,7 @@ import UserProfile from "./components/Details/UserProfile";
 import Order from "./components/Details/Order";
 import SendPasswordResetEmail from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Checkout from "./components/Checkout";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -37,6 +37,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <ToastContainer />
+
         <NavBar />
         <main className="main__section">
           <Routes>
@@ -47,6 +48,7 @@ function App() {
             <Route path="/product/:id" element={<ViewProduct />} />
             {!isAdmin && (
               <>
+                <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout-success" element={<CheckoutSucess />} />
                 <Route path="/cart" element={<Cart />} />
               </>
