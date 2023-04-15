@@ -8,7 +8,7 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 
 const router = express.Router();
 
-router.post("/create-checkout-session", async (req, res) => {
+router.post("/create-checkout-session", async (req, response) => {
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.userId,
@@ -60,16 +60,48 @@ router.post("/create-checkout-session", async (req, res) => {
     cancel_url: `${process.env.CLIENT_URL}/cart`,
   });
 
-  res.send({ url: session.url });
+  response.send({ url: session.url });
 });
 
 //create order
-const createOrder = async (customer, data, lineItems) => {
+
+// const createOrder = async (customer, data, lineItems) => {
+//   const newOrder = new Order({
+//     userId: customer.metadata.userId,
+//     customerId: data.customer,
+//     paymentIntentId: data.payment_intent,
+//     products: lineItems.data,
+//     subtotal: data.amount_subtotal,
+//     total: data.amount_total,
+//     shipping: data.customer_details,
+//     payment_status: data.payment_status,
+//   });
+
+//   try {
+//     const savedOrder = await newOrder.save();
+
+//     // res.status(200).json(savedOrder);
+//     console.log("Processed order:", savedOrder);
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+
+const createOrder = async (customer, data) => {
+  const Items = JSON.parse(customer.metadata.cart);
+
+  const products = Items.map((item) => {
+    return {
+      productId: item.id,
+      quantity: item.cartQuantity,
+    };
+  });
+
   const newOrder = new Order({
     userId: customer.metadata.userId,
     customerId: data.customer,
     paymentIntentId: data.payment_intent,
-    products: lineItems.data,
+    products,
     subtotal: data.amount_subtotal,
     total: data.amount_total,
     shipping: data.customer_details,
@@ -78,22 +110,21 @@ const createOrder = async (customer, data, lineItems) => {
 
   try {
     const savedOrder = await newOrder.save();
-
-    // res.status(200).json(savedOrder);
-    console.log("Processed order:", savedOrder);
+    console.log("Processed Order:", savedOrder);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
   }
 };
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
+
 let endpointSecret;
 endpointSecret =
   "whsec_c4a3ac07bd76cd45af62fcb7912bd44d31e4cffc71d0cf1b649c44c36477d250";
 
 router.post(
   "/webhook",
-  express.raw({ type: "application/json" }),
+  express.json({ type: "application/json" }),
   (req, response) => {
     const sig = req.headers["stripe-signature"];
 
@@ -112,37 +143,59 @@ router.post(
         response.status(400).send(`Webhook Error: ${err.message}`);
         return;
       }
-      data = event.data.obj;
+      data = event.data.object;
       eventType = event.type;
+
+      // console.log("event", event);
+      // console.log("if wala data", data);
     } else {
-      data = req.body.data.obj;
+      data = req.body.data.object;
       eventType = req.body.type;
+      ////
+      // console.log("else wala data", data);
     }
 
     //handle the event
+    // if (eventType === "checkout.session.completed") {
+    //   // console.log("checkout.session.completed", data);
+    //   // console.log("--------------------");
+    //   stripe.customers
+    //     .retrieve(data.customer)
+    //     .then((customer) => {
+    //       console.log(stripe.checkout.sessions, "stripe checkout sessions");
+    //       stripe.checkout.sessions.listLineItems(
+    //         data.id,
+    //         {},
+    //         function (err, lineItems) {
+    //           console.log("line_items", lineItems);
+
+    //           createOrder(customer, data, lineItems);
+    //         }
+    //       );
+
+    //       createOrder(customer, data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err.message);
+    //     });
+    // }
     if (eventType === "checkout.session.completed") {
       stripe.customers
         .retrieve(data.customer)
-        .then((customer) => {
-          stripe.chekout.sessions.listLineItems(
-            data.id,
-            {},
-            function (err, lineItems) {
-              console.log("line_items", lineItems);
-
-              createOrder(customer, data, lineItems);
-            }
-          );
-
-          createOrder(customer, data);
+        .then(async (customer) => {
+          try {
+            // CREATE ORDER
+            createOrder(customer, data);
+          } catch (err) {
+            console.log(typeof createOrder);
+            console.log(err);
+          }
         })
-        .catch((err) => {
-          console.log(err.message);
-        });
+        .catch((err) => console.log(err.message));
     }
 
     // Return a 200 response to acknowledge receipt of the event
-    response.send(200).send("OK");
+    response.status(200).json("OK");
   }
 );
 

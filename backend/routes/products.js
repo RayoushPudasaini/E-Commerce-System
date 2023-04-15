@@ -4,6 +4,47 @@ const { auth, isUser, isAdmin } = require("../middleware/auth");
 const router = require("express").Router();
 const cloudinary = require("../utils/cloudinary");
 
+class APIfeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+  filtering() {
+    const queryObj = { ...this.queryString };
+
+    const excludedFields = ["page", "sort", "limit"];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(
+      /\b(gte|gt|lt|lte|regex)\b/g,
+      (match) => "$" + match
+    );
+    this.query.find(JSON.parse(queryStr));
+
+    return this;
+  }
+
+  sorting() {
+    if (this.queryString.sort) {
+      const sortBy = this.queryString.sort.split(",").join(" ");
+      this.query = this.query.sort(sortBy);
+    } else {
+      this.query = this.query.sort("-createdAt");
+    }
+
+    return this;
+  }
+
+  paginating() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 10;
+    const skip = (page - 1) * limit;
+    this.query = this.query.skip(skip).limit(limit);
+    return this;
+  }
+}
+
 //CREATE
 
 router.post("/", async (req, res) => {
@@ -50,21 +91,17 @@ router.delete("/:id", isAdmin, async (req, res) => {
 //GET ALL PRODUCTS
 
 router.get("/", async (req, res) => {
-  const qbrand = req.query.brand;
   try {
-    let products;
+    const features = new APIfeatures(Product.find(), req.query)
+      .filtering()
+      .sorting();
+    // .paginating();
 
-    if (qbrand) {
-      products = await Product.find({
-        brand: qbrand,
-      });
-    } else {
-      products = await Product.find();
-    }
+    const products = await features.query;
 
-    res.status(200).send(products);
+    res.json(products);
   } catch (error) {
-    res.status(500).send(error);
+    return res.status(500).json(error.message);
   }
 });
 

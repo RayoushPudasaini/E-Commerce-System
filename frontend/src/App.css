@@ -9,6 +9,12 @@ html {
   font-family: "Nunito", sans-serif;
   scroll-behavior: smooth;
 }
+.main__section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100vh;
+}
 
 /*NavBar */
 .nav-bar {

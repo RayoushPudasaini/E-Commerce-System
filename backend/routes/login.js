@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
   const { error } = schema.validate(req.body);
   try {
     if (error)
-      return res.status(400).json({ message: error.details[0].message });
+      return res.status(400).json({ message: "Email Field is Required" });
     let user = await User.findOne({ email: req.body.email }).exec();
     if (!user) return res.status(400).json({ message: "Invalid email.." });
 

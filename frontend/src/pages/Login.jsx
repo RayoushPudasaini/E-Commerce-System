@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./login.css";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/authSlice";
 
@@ -50,25 +50,33 @@ const Login = () => {
 
   return (
     <div className="login__div">
-      <h1>Login</h1>
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login__form">
+        <h1>Login</h1>
+        <div className="gap-top">
+          <p> New User? </p>
+          <Link to="/Register" className="forgot-password">
+            <h4> Register here </h4>
+          </Link>
+        </div>
         <input type="email" onChange={handleEmailChange} placeholder="E-mail" />
         <input
           type="password"
           onChange={handlePasswordChange}
           placeholder="Password"
         />
-        <button type="submit">Login</button>
-        <div className="gap-top">
-          <h5> Not Register ? </h5>
-        </div>
-        <button
-          onClick={() => navigate("/register")}
-          className="button-register"
-        >
-          Register
+        <button type="submit" id="button-login">
+          Login
         </button>
+        <Link
+          to="/forgot-password"
+          style={{
+            marginTop: "10px",
+            alignSelf: "flex-end",
+          }}
+          className="forgot-password"
+        >
+          <p> Forgot Password</p>
+        </Link>
       </form>
     </div>
   );

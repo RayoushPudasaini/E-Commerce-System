@@ -27,6 +27,8 @@ import Users from "./components/admin/Users";
 import Product from "./components/Details/Product";
 import UserProfile from "./components/Details/UserProfile";
 import Order from "./components/Details/Order";
+import SendPasswordResetEmail from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -36,41 +38,51 @@ function App() {
       <BrowserRouter>
         <ToastContainer />
         <NavBar />
-        <Routes>
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
-          </Route>
-
-          <Route path="/product/:id" element={<ViewProduct />} />
-          {!isAdmin && (
-            <>
-              <Route path="/checkout-success" element={<CheckoutSucess />} />
-              <Route path="/cart" element={<Cart />} />
-            </>
-          )}
-
-          <Route path="/Register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-
-          {isAdmin && token && (
-            <Route path="product/:id" element={<Product />}>
-              <Route path="order/:id" element={<Order />} />
-              <Route path="user/:id" element={<UserProfile />} />
+        <main className="main__section">
+          <Routes>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<Home />} />
             </Route>
-          )}
-          {isAdmin && token && (
-            <Route path="/:admin" element={<Dashboard />}>
-              <Route path="products" element={<Products />} />
-              {/* <Route path="products-list" element={<ProductsList />} /> */}
-              <Route path="orders" element={<Orders />} />
-              <Route path="create-product" element={<CreateProduct />} />
-              <Route path="Summary" element={<Summary />} />
-              <Route path="users" element={<Users />} />
-            </Route>
-          )}
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/product/:id" element={<ViewProduct />} />
+            {!isAdmin && (
+              <>
+                <Route path="/checkout-success" element={<CheckoutSucess />} />
+                <Route path="/cart" element={<Cart />} />
+              </>
+            )}
+
+            <Route path="/Register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/forgot-password"
+              element={<SendPasswordResetEmail />}
+            />
+            <Route
+              path="/reset-password/:id/:token"
+              element={<ResetPassword />}
+            />
+
+            {isAdmin && token && (
+              <Route path="product/:id" element={<Product />}>
+                <Route path="order/:id" element={<Order />} />
+                <Route path="user/:id" element={<UserProfile />} />
+              </Route>
+            )}
+            {isAdmin && token && (
+              <Route path="/:admin" element={<Dashboard />}>
+                <Route path="products" element={<Products />} />
+                {/* <Route path="products-list" element={<ProductsList />} /> */}
+                <Route path="orders" element={<Orders />} />
+                <Route path="create-product" element={<CreateProduct />} />
+                <Route path="Summary" element={<Summary />} />
+                <Route path="users" element={<Users />} />
+              </Route>
+            )}
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
         {!isAdmin && <Footer />}
       </BrowserRouter>
     </div>

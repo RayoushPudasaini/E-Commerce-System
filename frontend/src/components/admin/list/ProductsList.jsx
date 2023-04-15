@@ -140,50 +140,6 @@ export default function ProductsList() {
     [items]
   );
 
-  // const productsColumn = [
-  //   { field: "id", headerName: "ID", width: 210 },
-  //   {
-  //     field: "imageUrl",
-  //     headerName: "Image",
-  //     width: 80,
-  //     renderCell: (params) => {
-  //       return (
-  //         <ImageContainer>
-  //           <img src={params.row.imageUrl} alt="params.row.imageUrl" />
-  //         </ImageContainer>
-  //       );
-  //     },
-  //   },
-  //   { field: "pName", headerName: "Name", flex: 1 },
-  //   {
-  //     field: "pDesc",
-  //     headerName: "Description",
-  //     // width: 130,
-  //     flex: 2,
-  //   },
-  //   {
-  //     field: "pPrice",
-  //     headerName: "Price",
-  //     width: 80,
-  //   },
-  //   {
-  //     field: "actions",
-  //     headerName: "Actions",
-  //     sortable: false,
-  //     width: 120,
-  //     renderCell: (params) => {
-  //       return (
-  //         <Actions>
-  //           <Delete onClick={() => handleDelete(params.row.id)}>Delete</Delete>
-  //           <View onClick={() => navigate(`/product/${params.row.id}`)}>
-  //             View
-  //           </View>
-  //         </Actions>
-  //       );
-  //     },
-  //   },
-  // ];
-
   const productsColumn = React.useCallback(
     () => [
       { field: "id", headerName: "ID", width: 210 },

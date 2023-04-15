@@ -1,89 +1,92 @@
 .login__div {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  h1 {
-    color: rgb(77, 140, 174);
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    padding: 2rem;
-    width: 30%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-top: 2rem;
-  }
-  
-  input[type="email"],
-  input[type="password"] {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    border: 1px solid rgb(77, 140, 174);
-    border-radius: 5px;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.2s ease-in-out;
-  }
-  
-  input[type="email"]:focus,
-  input[type="password"]:focus {
-    border-color: rgb(63, 121, 150);
-  }
-  
-  label {
-    font-size: 1.2rem;
-    color: rgb(77, 140, 174);
-    margin-bottom: 0.5rem;
-  }
-  
-  .button[type="submit"] {
-    width: 50%;
-    padding: 0.5rem;
-    background-color: rgb(77, 140, 174);
-    color: white;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-  }
-  
-  .button[type="submit"]:hover {
-    background-color: rgb(63, 121, 150);
-  }
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-  .button-register {
-    width: 50%;
-    padding: 0.5rem;
-    background-color: rgb(77, 140, 174);
-    color: white;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-  }
-  .gap-top{
-    margin-top: 20px;
-  }
-  
+.login__form h1 {
+  color: rgb(77, 140, 174);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
 
-  
- 
-  
+.login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  background-color: white;
+  padding: 3rem 2rem;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-top: 2rem;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  border: 1px solid rgb(77, 140, 174);
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s ease-in-out;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: rgb(63, 121, 150);
+}
+
+label {
+  font-size: 1.2rem;
+  color: rgb(77, 140, 174);
+  margin-bottom: 0.5rem;
+}
+
+#button-login:hover {
+  background-color: rgb(63, 121, 150);
+}
+
+#button-login {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: rgb(77, 140, 174);
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.gap-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gap-top {
+  margin-bottom: 0.5rem;
+}
+.gap-top > p {
+  font-size: 1.015rem;
+
+  color: rgb(77, 140, 174);
+}
+
+.forgot-password {
+  text-decoration: none;
+}
+
+.forgot-password :hover {
+  text-decoration: underline;
+}

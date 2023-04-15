@@ -17,6 +17,7 @@ const NavBar = () => {
       <Link to="/">
         <h2>JuttaPasal</h2>
       </Link>
+
       {!auth.isAdmin && (
         <Link to="/cart">
           <div className="nav-bar-cart">
