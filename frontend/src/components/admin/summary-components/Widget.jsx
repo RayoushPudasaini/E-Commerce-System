@@ -7,26 +7,17 @@ const Widget = ({ data }) => {
         {data.icon}
       </Icon>
       <Text>
-        <h3>
+        <h3
+          style={{
+            backgroundcolor: "red",
+          }}
+        >
           {data.isMoney
             ? "$" + data.digits?.toLocaleString()
             : data.digits?.toLocaleString()}
         </h3>
         <p>{data.title}</p>
       </Text>
-      {data.percentage < 0 ? (
-        <>
-          <Percentage isPositive={false}>
-            {Math.floor(data.percentage) + "%"}
-          </Percentage>
-        </>
-      ) : (
-        <>
-          <Percentage isPositive={true}>
-            {Math.floor(data.percentage) + "%"}
-          </Percentage>
-        </>
-      )}
     </StyledWidget>
   );
 };

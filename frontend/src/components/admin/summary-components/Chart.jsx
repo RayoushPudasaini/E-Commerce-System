@@ -74,17 +74,13 @@ const Chart = () => {
           const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
           return {
-            day: DAYS[item._id - 1],
-            amount: item.total / 100,
+            Day: DAYS[item._id - 1],
+            Amount: item.total,
           };
         });
 
         setSales(() => {
-          if (newData.length < 2) {
-            return [...chartData, ...newData];
-          } else {
-            return newData;
-          }
+          return newData;
         });
 
         setLoading(false);
@@ -115,13 +111,13 @@ const Chart = () => {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
+              <XAxis dataKey="Day" />
               <YAxis />
               <Tooltip />
               <Legend />
               <Line
                 type="monotone"
-                dataKey="amount"
+                dataKey="Amount"
                 stroke="#8884d8"
                 activeDot={{ r: 8 }}
               />

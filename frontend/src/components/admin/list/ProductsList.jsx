@@ -48,12 +48,12 @@ export default function ProductsList() {
       {
         field: "name",
         headerName: "Name",
-        width: 250,
+        width: 180,
       },
       {
         field: "email",
         headerName: "Email",
-        width: 300,
+        width: 250,
       },
       {
         field: "isAdmin",
@@ -75,7 +75,7 @@ export default function ProductsList() {
       {
         field: "action",
         headerName: "Action",
-        width: 150,
+        width: 100,
         renderCell: (params) => {
           return (
             <Actions>
@@ -159,7 +159,7 @@ export default function ProductsList() {
       {
         field: "pDesc",
         headerName: "Description",
-        width: 450,
+        width: 340,
       },
       {
         field: "pPrice",

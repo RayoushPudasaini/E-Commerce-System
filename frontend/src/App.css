@@ -46,9 +46,6 @@ html {
   display: flex;
   align-items: center;
 }
-.search-icon {
-  margin-right: 1rem;
-}
 
 .user-icon {
   font-size: 1.5rem;
@@ -69,10 +66,23 @@ html {
   margin-left: 5px;
 }
 
-.nav-bar-cart {
+.nav-bar-cart,
+.search__div {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.search__div {
+  gap: 1rem;
+}
+.search__div input {
+  margin-top: 1.3rem;
+  width: 25rem;
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  border-radius: 5px;
 }
 
 /*not found class*/
@@ -162,7 +172,7 @@ html {
 }
 
 .product h3 {
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: 400;
   text-align: center;
 }
@@ -171,6 +181,16 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.product .details p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3.5rem; /* Set max-height to limit the number of lines */
+  white-space: normal; /* Set white-space to normal to break words at spaces */
 }
 
 .product .details .price {

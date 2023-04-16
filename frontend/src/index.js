@@ -12,10 +12,12 @@ import cartReducer, { getTotals } from "./features/cartSlice";
 import authReducer from "./features/authSlice";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import orderSlice from "./features/orderSlice";
 
 const store = configureStore({
   reducer: {
     products: productsReducer,
+    orders: orderSlice,
     cart: cartReducer,
     auth: authReducer,
     [productsApi.reducerPath]: productsApi.reducer,
