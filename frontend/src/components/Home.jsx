@@ -52,7 +52,7 @@ const Home = () => {
               </Link>
 
               <div className="details">
-                <span>{product.desc}</span>
+                <p>{product.desc}</p>
                 <span className="price">${product.price}</span>
               </div>
 

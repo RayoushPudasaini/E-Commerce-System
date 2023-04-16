@@ -1,6 +1,4 @@
 import { useSelector } from "react-redux";
-import info from "./AllTimeData";
-
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,15 +6,34 @@ import { setHeaders, url } from "../../../features/api";
 
 const AlltimeData = () => {
   const [totalUsers, setTotalUsers] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalEarnings, setTotalEarnings] = useState(0);
   const { items } = useSelector((state) => state.products);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get(`${url}/users/stats`, setHeaders());
+        const usersRes = await axios.get(`${url}/users/stats`, setHeaders());
 
-        if (res?.data?.totalUsers) {
-          setTotalUsers(res?.data?.totalUsers);
+        if (usersRes?.data && usersRes.status === 200) {
+          // const { total } = usersRes.data[0]; // extract the 'total' field from the first object in the array
+          setTotalUsers(usersRes.data.totalUsers);
+        }
+
+        const ordersRes = await axios.get(`${url}/orders/stats`, setHeaders());
+        if (ordersRes?.data && ordersRes.data.length > 0) {
+          const { total } = ordersRes.data[0];
+          setTotalOrders(total);
+        }
+
+        const earningsRes = await axios.get(
+          `${url}/orders/income/stats`,
+          setHeaders()
+        );
+
+        if (earningsRes?.data && earningsRes.data.length > 0) {
+          const { total } = earningsRes.data[0];
+          setTotalEarnings(total);
         }
       } catch (err) {
         console.log(err);
@@ -24,6 +41,14 @@ const AlltimeData = () => {
     }
 
     fetchData();
+
+    // set interval to update data every 5 minutes
+    const interval = setInterval(() => {
+      fetchData();
+    }, 300000);
+
+    // cleanup function to clear interval when component unmounts
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -39,11 +64,11 @@ const AlltimeData = () => {
       </InfoWrapper>
       <InfoWrapper>
         <Title>Orders</Title>
-        <Data>200</Data>
+        <Data>{totalOrders}</Data>
       </InfoWrapper>
       <InfoWrapper>
         <Title>Earnings</Title>
-        <Data>$20,000</Data>
+        <Data>{`$${totalEarnings}`}</Data>
       </InfoWrapper>
     </Main>
   );

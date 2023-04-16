@@ -48,14 +48,20 @@ const Summary = () => {
     fetchData();
   }, []);
 
+  //use effect for orders
+
   useEffect(() => {
     async function fetchData() {
       try {
         const res = await axios.get(`${url}/orders/stats`, setHeaders());
+        console.log("res", res.data);
 
         res?.data?.sort(compare);
 
         console.log("stats", res);
+        if (res?.data[0]?.total) {
+          setOrders(res.data);
+        }
         if (res?.data[1]?.total) {
           setOrders(res.data);
           setOrdersPerc(
@@ -116,7 +122,7 @@ const Summary = () => {
     },
     {
       icon: <BsBarChartLineFill />,
-      digits: income[0]?.total ? income[0]?.total / 100 : "",
+      digits: income[0]?.total ? income[0]?.total : "",
 
       isMoney: true,
       title: "Earnings",

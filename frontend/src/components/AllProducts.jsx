@@ -1,45 +1,34 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { addToCart } from "../features/cartSlice";
 import "./customStyles.css";
+import { Grid, Typography } from "@mui/material";
+import ProductCard from "./ProductCard";
 
 const AllProducts = ({ data, status }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
-    navigate("/cart");
-  };
-
   return (
-    <section>
-      <h2>All Products</h2>
+    <section
+      style={{
+        margin: "2rem auto",
+      }}
+    >
+      <Typography
+        variant="h2"
+        sx={{
+          fontSize: "2rem",
+          fontWeight: "bold",
+          textAlign: "center",
+          margin: "2.5rem 0 1.5rem 0",
+        }}
+      >
+        {data?.length > 0 ? "All Products" : "No Products Found!"}
+      </Typography>
       {status === "success" ? (
-        <div className="all-products ">
+        <Grid container spacing={3}>
           {data?.map((product) => (
-            <div key={product._id} className="product">
-              <h3>{product.name}</h3>
-              <Link to={`/product/${product._id}`}>
-                <img
-                  src={product.image.url}
-                  alt={product.name}
-                  className="product_img"
-                />
-              </Link>
-
-              <div className="details">
-                <span>{product.desc}</span>
-                <span className="price">${product.price}</span>
-              </div>
-
-              <button onClick={() => handleAddToCart(product)}>
-                Add to Cart
-              </button>
-            </div>
+            <Grid item xs={12} sm={6} md={5} lg={4} key={product._id}>
+              <ProductCard product={product} />
+            </Grid>
           ))}
-        </div>
+        </Grid>
       ) : status === "pending" ? (
         <p>Loading...</p>
       ) : (

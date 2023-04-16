@@ -20,6 +20,8 @@ class APIfeatures {
       /\b(gte|gt|lt|lte|regex)\b/g,
       (match) => "$" + match
     );
+
+    // match
     this.query.find(JSON.parse(queryStr));
 
     return this;
@@ -38,7 +40,7 @@ class APIfeatures {
 
   paginating() {
     const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 10;
+    const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
     this.query = this.query.skip(skip).limit(limit);
     return this;
@@ -92,10 +94,11 @@ router.delete("/:id", isAdmin, async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const features = new APIfeatures(Product.find(), req.query)
+    const query = req.query;
+    const features = new APIfeatures(Product.find(), query)
       .filtering()
-      .sorting();
-    // .paginating();
+      .sorting()
+      .paginating();
 
     const products = await features.query;
 

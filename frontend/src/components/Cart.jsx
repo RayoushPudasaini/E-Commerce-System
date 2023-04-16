@@ -17,7 +17,22 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("cartItems", cart.cartItems);
+  console.log(cart.cartItems);
+  // send all cartItems except description to backend from cart.cartItems
+  const cartItems = cart.cartItems.map((item) => {
+    return {
+      _id: item._id,
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      cartQuantity: item.qty,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+      brand: "a",
+      desc: "a",
+      _v: item._v,
+    };
+  });
 
   useEffect(() => {
     dispatch(getTotals());

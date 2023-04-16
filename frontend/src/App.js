@@ -28,7 +28,8 @@ import UserProfile from "./components/Details/UserProfile";
 import Order from "./components/Details/Order";
 import SendPasswordResetEmail from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
-import Checkout from "./components/Checkout";
+import CashCheckout from "./components/CashCheckout";
+import SearchProduct from "./SearchProduct";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -45,10 +46,11 @@ function App() {
               <Route index element={<Home />} />
             </Route>
 
+            <Route path="/search/:name" element={<SearchProduct />} />
             <Route path="/product/:id" element={<ViewProduct />} />
             {!isAdmin && (
               <>
-                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/cash-checkout" element={<CashCheckout />} />
                 <Route path="/checkout-success" element={<CheckoutSucess />} />
                 <Route path="/cart" element={<Cart />} />
               </>

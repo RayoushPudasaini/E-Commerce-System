@@ -37,7 +37,7 @@ const Transactions = () => {
             <Transaction key={index}>
               <p>{order.shipping.name}</p>
               <p>${(order.total / 100).toLocaleString()}</p>
-              <p>{moment(order.createAt).fromNow()}</p>
+              <p>{moment(order.createdAt).fromNow()}</p>
             </Transaction>
           ))}
         </>
