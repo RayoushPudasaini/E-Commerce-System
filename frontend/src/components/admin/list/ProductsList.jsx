@@ -7,6 +7,7 @@ import { productDelete } from "../../../features/productsSlice";
 import axios from "axios";
 import { setHeaders, url } from "../../../features/api";
 import moment from "moment";
+import EditProduct from "../EditProduct";
 
 export default function ProductsList() {
   const navigate = useNavigate();
@@ -133,6 +134,7 @@ export default function ProductsList() {
           id: item._id,
           imageUrl: item.image.url,
           pName: item.name,
+          brand: item.brand,
           pDesc: item.desc,
           pPrice: item.price.toLocaleString(),
         };
@@ -156,6 +158,7 @@ export default function ProductsList() {
         },
       },
       { field: "pName", headerName: "Name", width: 250 },
+      { field: "brand", headerName: "Brand", width: 250 },
       {
         field: "pDesc",
         headerName: "Description",
@@ -170,13 +173,14 @@ export default function ProductsList() {
         field: "actions",
         headerName: "Actions",
         sortable: false,
-        width: 120,
+        width: 170,
         renderCell: (params) => {
           return (
             <Actions>
               <Delete onClick={() => handleDelete(params.row.id)}>
                 Delete
               </Delete>
+              <EditProduct prodId={params.row.id} />
               <View onClick={() => navigate(`/product/${params.row.id}`)}>
                 View
               </View>
@@ -246,6 +250,7 @@ const Actions = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100px;
+  gap: 0.7rem;
   button {
     border: none;
     outline: none;

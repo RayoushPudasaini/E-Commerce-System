@@ -3,18 +3,54 @@ const { auth, isUser, isAdmin } = require("../middleware/auth");
 const moment = require("moment");
 const router = require("express").Router();
 
+//update orders
+router.put("/:id", isAdmin, async (req, res) => {
+  try {
+    const updateOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+
+    res.status(200).send(updateOrder);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 //GET ORDERS
 
-router.get("/", auth, isAdmin, async (req, res) => {
-  const query = req.query.new;
+router.get("/", auth, async (req, res) => {
+  // const query = req.query.new;
 
   try {
-    const orders = query
-      ? await Order.find().sort({ _id: -1 }).limit(4)
-      : await Order.find().sort({ _id: -1 });
+    // const orders = query
+    //   ? await Order.find()
+    //       .sort({
+    //         // createdAt sort by date
+    //         createdAt: -1,
+    //       })
+    //       .limit(4)
+    //   : await Order.find().sort({ _id: -1 });
+    const orders = await Order.find();
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+router.get("/findOne/:id", auth, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate({
+      path: "products.productId",
+      model: "Product",
+    });
+    // console.log(order);
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json(err.message);
   }
 });
 

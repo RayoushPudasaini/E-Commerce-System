@@ -56,12 +56,6 @@ const CreateProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // if (!productImg)
-    //   return ToastAlert({ type: "error", message: "Image is required" });
-
-    // if (!name || !brand || !price || !desc)
-    //   return ToastAlert({ type: "error", message: "All fields are required" });
-
     const priceN = parseInt(price);
     const data = {
       name,

@@ -16,18 +16,33 @@ export const ordersFetch = createAsyncThunk("orders/ordersFetch", async () => {
   }
 });
 
-export const orderEdit = createAsyncThunk("orders/orderEdit", async (order) => {
-  try {
-    const response = await axios.put(
-      `${url}/orders/${order.id}`,
-      order,
-      setHeaders()
+export const orderEdit = createAsyncThunk(
+  "orders/orderEdit",
+  async (values, { getState }) => {
+    const state = getState();
+
+    let currentOrder = state.orders.list.filter(
+      (order) => order._id === values.id
     );
-    return response.data;
-  } catch (error) {
-    console.log(error);
+
+    const newOrder = {
+      ...currentOrder[0],
+      delivery_status: values.delivery_status,
+    };
+
+    try {
+      const response = await axios.put(
+        `${url}/orders/${values.id}`,
+        newOrder,
+        setHeaders()
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const orderSlice = createSlice({
   name: "orders",
@@ -48,6 +63,10 @@ const orderSlice = createSlice({
       state.status = "pending";
     },
     [orderEdit.fulfilled]: (state, action) => {
+      const updateOrders = state.list.map((order) =>
+        order._id === action.payload._id ? action.payload : order
+      );
+      state.list = updateOrders;
       state.status = "success";
     },
     [orderEdit.rejected]: (state, action) => {

@@ -5,7 +5,12 @@ const orderSchema = new mongoose.Schema(
     customerId: { type: String },
     paymentIntentId: { type: String },
 
-    products: [],
+    products: [
+      {
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
     subtotal: { type: Number, required: true },
     total: { type: Number, required: true },
     shipping: { type: Object, required: true },

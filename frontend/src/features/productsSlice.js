@@ -10,6 +10,8 @@ const initialState = {
   status: null,
   error: null,
   createStatus: null,
+  editStatus: null,
+  deleteStatus: null,
 };
 
 export const productsFetch = createAsyncThunk(
@@ -48,6 +50,35 @@ export const productsCreate = createAsyncThunk(
         });
       }
       return response.data;
+      // setSuccess(true);
+    } catch (error) {
+      ToastAlert({
+        type: "error",
+        message: error.response.data.message,
+      });
+
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const productsEdit = createAsyncThunk(
+  "products/productsEdit",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${url}/products/${data.product.currentProd._id}`,
+        data,
+        setHeaders()
+      );
+
+      if (response.status === 200) {
+        ToastAlert({
+          type: "success",
+          message: "Product updated successfully",
+        });
+        return response.data;
+      }
+
       // setSuccess(true);
     } catch (error) {
       ToastAlert({
@@ -141,8 +172,6 @@ const productsSlice = createSlice({
         state.status = "pending";
       })
       .addCase(productDelete.fulfilled, (state, action) => {
-        console.log(action.payload, "action.payload");
-        console.log(state.items, "state.items");
         //immer
         state.status = "success";
         state.items = state.items.filter(
@@ -152,6 +181,30 @@ const productsSlice = createSlice({
       .addCase(productDelete.rejected, (state, action) => {
         //immer
         state.status = "rejected";
+        state.error = action.payload;
+      })
+
+      .addCase(productsEdit.pending, (state, action) => {
+        //immer
+        state.editStatus = "pending";
+      })
+      .addCase(productsEdit.fulfilled, (state, action) => {
+        const updatedProducts = state?.items.map((product) =>
+          product._id === action.payload._id ? action.payload : product
+        );
+        state.items = updatedProducts;
+
+        // console.log(action.payload, "action.payload");
+        // console.log(state.items, "state.items");
+        //immer
+        state.editStatus = "success";
+        // state.items = state.items.filter(
+        //   (item) => item._id !== action.payload.product._id
+        // );
+      })
+      .addCase(productsEdit.rejected, (state, action) => {
+        //immer
+        state.editStatus = "rejected";
         state.error = action.payload;
       });
   },

@@ -22,14 +22,13 @@ import Footer from "./components/Footer";
 import ViewProduct from "./pages/ViewProduct";
 import Orders from "./components/admin/Orders";
 import Users from "./components/admin/Users";
-
 import Product from "./components/Details/Product";
 import UserProfile from "./components/Details/UserProfile";
-import Order from "./components/Details/Order";
 import SendPasswordResetEmail from "./pages/ForgetPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CashCheckout from "./components/CashCheckout";
 import SearchProduct from "./SearchProduct";
+import OrderView from "./components/Details/OrderView";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -69,10 +68,11 @@ function App() {
 
             {isAdmin && token && (
               <Route path="product/:id" element={<Product />}>
-                <Route path="order/:id" element={<Order />} />
                 <Route path="user/:id" element={<UserProfile />} />
               </Route>
             )}
+            {token && <Route path="order-view/:id" element={<OrderView />} />}
+
             {isAdmin && token && (
               <Route path="/:admin" element={<Dashboard />}>
                 <Route path="products" element={<Products />} />

@@ -1,6 +1,6 @@
 require("dotenv").config();
-const { Product } = require("../models/Product");
 const { auth, isUser, isAdmin } = require("../middleware/auth");
+const { Product } = require("../models/product");
 const router = require("express").Router();
 const cloudinary = require("../utils/cloudinary");
 
@@ -85,6 +85,54 @@ router.delete("/:id", isAdmin, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id).exec();
     res.status(200).json({ message: "Product has been deleted...", product });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
+//edit product
+router.put("/:id", isAdmin, async (req, res) => {
+  try {
+    if (req.body.productImg) {
+      const destroyResponse = await cloudinary.uploader.destroy(
+        req.body.product.image.public_id
+      );
+
+      if (destroyResponse) {
+        const uploadedResponse = await cloudinary.uploader.upload(
+          req.body.productImg,
+          {
+            upload_present: "online-shop",
+            folder: "online-shop",
+          }
+        );
+
+        if (uploadedResponse) {
+          const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            {
+              $set: {
+                ...req.body.product,
+                image: uploadedResponse,
+              },
+            },
+            { new: true }
+          );
+          res.status(200).send(updatedProduct);
+        }
+      }
+    } else {
+      const updatedProduct = await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: {
+            ...req.body.product,
+          },
+        },
+        { new: true }
+      );
+      res.status(200).send(updatedProduct);
+    }
   } catch (error) {
     res.status(500).json(error.message);
   }
