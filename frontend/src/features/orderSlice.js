@@ -15,6 +15,20 @@ export const ordersFetch = createAsyncThunk("orders/ordersFetch", async () => {
     console.log(error);
   }
 });
+export const fetchUserOrders = createAsyncThunk(
+  "orders/user-orders",
+  async () => {
+    try {
+      const response = await axios.get(
+        `${url}/orders/user-orders`,
+        setHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const orderEdit = createAsyncThunk(
   "orders/orderEdit",
@@ -57,6 +71,16 @@ const orderSlice = createSlice({
       state.status = "success";
     },
     [ordersFetch.rejected]: (state, action) => {
+      state.status = "rejected";
+    },
+    [fetchUserOrders.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [fetchUserOrders.fulfilled]: (state, action) => {
+      state.list = action.payload;
+      state.status = "success";
+    },
+    [fetchUserOrders.rejected]: (state, action) => {
       state.status = "rejected";
     },
     [orderEdit.pending]: (state, action) => {

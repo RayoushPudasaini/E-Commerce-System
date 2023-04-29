@@ -18,6 +18,8 @@ const CreateProduct = () => {
   const [desc, setDesc] = useState("");
   const [success, setSuccess] = useState(false);
 
+  console.log(productImg);
+
   const handleProductImageUpload = (e) => {
     try {
       const file = e.target.files[0];
@@ -64,8 +66,7 @@ const CreateProduct = () => {
       desc,
       image: productImg,
     };
-    const test = dispatch(productsCreate({ data, setSuccess }));
-    console.log(test);
+    dispatch(productsCreate({ data, setSuccess }));
   };
   return (
     <StyledCreateProduct>

@@ -42,7 +42,13 @@ const Home = () => {
         <Slider {...settings}>
           {data?.slice(0, 4)?.map((product) => (
             <div key={product._id} className="product">
-              <h3>{product.name}</h3>
+              <h3
+                style={{
+                  textTransform: "capitalize",
+                }}
+              >
+                {product.name}
+              </h3>
               <Link to={`/product/${product._id}`}>
                 <img
                   src={product.image.url}
@@ -52,7 +58,13 @@ const Home = () => {
               </Link>
 
               <div className="details">
-                <p>{product.desc}</p>
+                <p
+                  style={{
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {product.desc}
+                </p>
                 <span className="price">${product.price}</span>
               </div>
 

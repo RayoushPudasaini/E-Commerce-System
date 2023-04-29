@@ -3,6 +3,21 @@ const { auth, isUser, isAdmin } = require("../middleware/auth");
 const moment = require("moment");
 const router = require("express").Router();
 
+//get orders by user
+router.get("/user-orders", auth, async (req, res) => {
+  try {
+    // populate products and user
+    const orders = await Order.find({ userId: req.user._id }).populate(
+      "products.productId userId",
+      "-password"
+    );
+
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
+
 //update orders
 router.put("/:id", isAdmin, async (req, res) => {
   try {

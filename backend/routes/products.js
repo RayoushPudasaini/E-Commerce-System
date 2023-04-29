@@ -92,11 +92,14 @@ router.delete("/:id", isAdmin, async (req, res) => {
 
 //edit product
 router.put("/:id", isAdmin, async (req, res) => {
+  // console.log(req.body.productImg);
+  console.log(req.body, "req.body.product.image.public_id");
   try {
     if (req.body.productImg) {
       const destroyResponse = await cloudinary.uploader.destroy(
-        req.body.product.image.public_id
+        req.body.product.currentProd.image.public_id
       );
+      // console.log(destroyResponse, "destroyResponse");
 
       if (destroyResponse) {
         const uploadedResponse = await cloudinary.uploader.upload(
@@ -122,6 +125,7 @@ router.put("/:id", isAdmin, async (req, res) => {
         }
       }
     } else {
+      console.log(false);
       const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         {

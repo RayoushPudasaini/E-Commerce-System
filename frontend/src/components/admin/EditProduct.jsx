@@ -27,6 +27,8 @@ export default function EditProduct({ prodId }) {
   const [price, setPrice] = useState("");
   const [desc, setDesc] = useState("");
 
+  // console.log(productImg);
+
   const handleProductImageUpload = (e) => {
     try {
       const file = e.target.files[0];
@@ -48,6 +50,7 @@ export default function EditProduct({ prodId }) {
         0,
         (uri) => {
           setProductImg(uri);
+          setPreviewimg(uri);
         },
         "base64",
         200,
@@ -135,6 +138,7 @@ export default function EditProduct({ prodId }) {
               <input
                 type="text"
                 placeholder="Name"
+                style={{ textTransform: "capitalize" }}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -148,6 +152,7 @@ export default function EditProduct({ prodId }) {
                 type="text"
                 placeholder="Short Description"
                 value={desc}
+                style={{ textTransform: "capitalize" }}
                 onChange={(e) => setDesc(e.target.value)}
               />
 

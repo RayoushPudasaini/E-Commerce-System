@@ -64,6 +64,7 @@ export const productsCreate = createAsyncThunk(
 export const productsEdit = createAsyncThunk(
   "products/productsEdit",
   async (data, { rejectWithValue }) => {
+    // console.log(data);
     try {
       const response = await axios.put(
         `${url}/products/${data.product.currentProd._id}`,

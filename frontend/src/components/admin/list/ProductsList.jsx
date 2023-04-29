@@ -8,6 +8,7 @@ import axios from "axios";
 import { setHeaders, url } from "../../../features/api";
 import moment from "moment";
 import EditProduct from "../EditProduct";
+import { Typography } from "@mui/material";
 
 export default function ProductsList() {
   const navigate = useNavigate();
@@ -157,12 +158,46 @@ export default function ProductsList() {
           );
         },
       },
-      { field: "pName", headerName: "Name", width: 250 },
-      { field: "brand", headerName: "Brand", width: 250 },
+      {
+        field: "pName",
+        headerName: "Name",
+        width: 250,
+        renderCell: (params) => {
+          return (
+            <Typography textTransform={"capitalize"}>
+              {params.row.pName}
+            </Typography>
+          );
+        },
+      },
+      {
+        field: "brand",
+        headerName: "Brand",
+        width: 250,
+        renderCell: (params) => {
+          return (
+            <Typography textTransform={"capitalize"}>
+              {params.row.brand}
+            </Typography>
+          );
+        },
+      },
       {
         field: "pDesc",
         headerName: "Description",
         width: 340,
+        renderCell: (params) => {
+          return (
+            <Typography
+              component={"p"}
+              textTransform={"capitalize"}
+              // tooltip={params.row.pDesc}
+              title={params.row.pDesc}
+            >
+              {params.row.pDesc}
+            </Typography>
+          );
+        },
       },
       {
         field: "pPrice",

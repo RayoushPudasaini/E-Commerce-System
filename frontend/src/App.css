@@ -76,9 +76,9 @@ html {
 .search__div {
   gap: 1rem;
 }
-.search__div input {
+.search__div > input {
   margin-top: 1.3rem;
-  width: 25rem;
+  width: 25rem !important;
   border: none;
   outline: none;
   padding: 0.5rem;

@@ -6,7 +6,7 @@ import { setHeaders, url } from "../../features/api";
 import { Box, Typography } from "@mui/material";
 
 const Order = () => {
-  const params = useParams();
+  const { id } = useParams();
   const [order, setOrder] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +15,7 @@ const Order = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${url}/orders/findOne/${params.id}`,
+          `${url}/orders/findOne/${id}`,
           setHeaders()
         );
 
@@ -27,7 +27,7 @@ const Order = () => {
     };
 
     fetchOrder();
-  }, [params.id]);
+  }, [id]);
 
   return (
     <StyledOrders>
@@ -101,7 +101,7 @@ const Order = () => {
 
 export default Order;
 const StyledOrders = styled.div`
-  margin: 3rem;
+  margin: 2rem;
   display: flex;
   justify-content: center;
   h3 {
@@ -114,6 +114,7 @@ const OrdersContainer = styled.div`
   max-width: 500px;
   height: auto;
   margin: 0 auto;
+  padding: 4rem;
   border-radius: 5px;
   background-color: #fff;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

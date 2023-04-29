@@ -29,6 +29,7 @@ import ResetPassword from "./pages/ResetPassword";
 import CashCheckout from "./components/CashCheckout";
 import SearchProduct from "./SearchProduct";
 import OrderView from "./components/Details/OrderView";
+import UserOrderView from "./OrderView/UserOrderView";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -44,7 +45,6 @@ function App() {
             <Route path="/" element={<RootLayout />}>
               <Route index element={<Home />} />
             </Route>
-
             <Route path="/search/:name" element={<SearchProduct />} />
             <Route path="/product/:id" element={<ViewProduct />} />
             {!isAdmin && (
@@ -54,7 +54,6 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
               </>
             )}
-
             <Route path="/Register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route
@@ -65,14 +64,18 @@ function App() {
               path="/reset-password/:id/:token"
               element={<ResetPassword />}
             />
-
             {isAdmin && token && (
               <Route path="product/:id" element={<Product />}>
                 <Route path="user/:id" element={<UserProfile />} />
               </Route>
             )}
-            {token && <Route path="order-view/:id" element={<OrderView />} />}
-
+            {token && (
+              <>
+                <Route path="order-view/:id" element={<OrderView />} />
+                <Route path="user-order-view/:id" element={<UserOrderView />} />
+              </>
+            )}
+            `
             {isAdmin && token && (
               <Route path="/:admin" element={<Dashboard />}>
                 <Route path="products" element={<Products />} />
@@ -83,7 +86,6 @@ function App() {
                 <Route path="users" element={<Users />} />
               </Route>
             )}
-
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -74,10 +74,19 @@ const ProductCard = ({ product }) => {
           />
         </Link>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            textTransform={"capitalize"}
+          >
             {name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textTransform={"capitalize"}
+          >
             {desc}
           </Typography>
         </CardContent>
