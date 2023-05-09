@@ -5,6 +5,7 @@ const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
+
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
 };
@@ -85,6 +86,8 @@ const cartSlice = createSlice({
     },
     clearCart(state, action) {
       state.cartItems = [];
+      state.cartTotalQuantity = 0;
+      state.cartTotalAmount = 0;
       toast.error(`Cart cleared`, {
         position: "top-right",
         autoClose: 2000,

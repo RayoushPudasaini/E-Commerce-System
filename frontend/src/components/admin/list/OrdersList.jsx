@@ -23,15 +23,17 @@ export default function OrdersList() {
     dispatch(ordersFetch());
   }, [dispatch]);
 
-  const rows = list?.map((order) => {
+  let rows = list?.map((order) => {
     return {
       id: order._id,
       cName: order.shipping.name,
-      amount: (order.total / 100)?.toLocaleString(),
+      amount: order.total?.toLocaleString(),
       dStatus: order.delivery_status,
       date: moment(order.createdAt).fromNow(),
     };
   });
+
+  rows = rows?.reverse();
 
   const columns = [
     { field: "id", headerName: "ID", width: 220 },
@@ -137,9 +139,15 @@ export default function OrdersList() {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
+        pagination={true}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 10, page: 0 },
+          },
+          rowsPerPage: 10,
+        }}
+        pageSizeOptions={[10, 20, 30]}
+        checkboxSelection={false}
         disableSelectionOnClick
       />
     </div>

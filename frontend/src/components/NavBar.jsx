@@ -65,12 +65,17 @@ const NavBar = () => {
         <Link to="/">
           <h2>JuttaPasal</h2>
         </Link>
-        {/* <Link to="/">
-          <p>JuttaPasal</p>
+        <Link to="/AboutUs">
+          <p>About Us</p>
         </Link>
+
         <Link to="/">
-          <p>JuttaPasal</p>
-        </Link> */}
+          <p>Policy</p>
+        </Link>
+
+        <Link to="/">
+          <p>Shop</p>
+        </Link>
 
         <form
           style={{

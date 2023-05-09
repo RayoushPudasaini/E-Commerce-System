@@ -11,6 +11,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { productsEdit } from "../../features/productsSlice";
 import { PrimaryButton } from "./CommonStyled";
+import {
+  Box,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
+import { sizes } from "./CreateProduct";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export default function EditProduct({ prodId }) {
   const [open, setOpen] = React.useState(false);
@@ -26,8 +47,19 @@ export default function EditProduct({ prodId }) {
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
   const [desc, setDesc] = useState("");
+  const [productSize, setProductSize] = useState([]);
 
   // console.log(productImg);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setProductSize(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
 
   const handleProductImageUpload = (e) => {
     try {
@@ -77,6 +109,7 @@ export default function EditProduct({ prodId }) {
           brand,
           price,
           desc,
+          sizes: productSize,
         },
       })
     );
@@ -97,6 +130,7 @@ export default function EditProduct({ prodId }) {
     setName(selectedProd.name);
     setPrice(selectedProd.price);
     setDesc(selectedProd.desc);
+    setProductSize(selectedProd.sizes);
   };
 
   const handleClose = () => {
@@ -142,6 +176,38 @@ export default function EditProduct({ prodId }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="demo-multiple-chip-label" sx={{}}>
+                  Available Sizes
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-chip-label"
+                  id="demo-multiple-chip"
+                  multiple
+                  value={productSize}
+                  onChange={handleChange}
+                  input={
+                    <OutlinedInput
+                      id="select-multiple-chip"
+                      label="Available Sizes"
+                    />
+                  }
+                  renderValue={(selected) => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {sizes.map((size) => (
+                    <MenuItem key={size} value={size}>
+                      {size}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <input
                 type="number"
                 placeholder="Price"

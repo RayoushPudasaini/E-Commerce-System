@@ -8,7 +8,7 @@ import axios from "axios";
 import { setHeaders, url } from "../../../features/api";
 import moment from "moment";
 import EditProduct from "../EditProduct";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export default function ProductsList() {
   const navigate = useNavigate();
@@ -89,18 +89,8 @@ export default function ProductsList() {
     ],
     [deleteUser]
   );
-  // const usersRows = users?.map((user) => {
-  //   const { _id, name, email, isAdmin, createdAt } = user;
-  //   return {
-  //     id: _id,
-  //     name: name,
-  //     email: email,
-  //     isAdmin: isAdmin,
-  //     createdAt: createdAt,
-  //   };
-  // });
 
-  const usersRows = React.useMemo(
+  let usersRows = React.useMemo(
     () =>
       users?.map((user) => {
         const { _id, name, email, isAdmin, createdAt } = user;
@@ -115,22 +105,10 @@ export default function ProductsList() {
     [users]
   );
 
-  // const productsRows =
-  //   items &&
-  //   items.map((item) => {
-  //     return {
-  //       id: item._id,
-  //       imageUrl: item.image.url,
-  //       pName: item.name,
-  //       pDesc: item.desc,
-  //       pPrice: item.price.toLocaleString(),
-  //     };
-  //   });
-
-  const productsRows = React.useMemo(
+  let productsRows = React.useMemo(
     () =>
       items &&
-      items.map((item) => {
+      items?.map((item) => {
         return {
           id: item._id,
           imageUrl: item.image.url,
@@ -145,7 +123,6 @@ export default function ProductsList() {
 
   const productsColumn = React.useCallback(
     () => [
-      { field: "id", headerName: "ID", width: 210 },
       {
         field: "imageUrl",
         headerName: "Image",
@@ -256,7 +233,17 @@ export default function ProductsList() {
   }, [pathname]);
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <Box
+      sx={{
+        height: 500,
+        width: "100%",
+        overflow: "scroll",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flex: "1 1 auto",
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
@@ -264,13 +251,13 @@ export default function ProductsList() {
         pagination={true}
         initialState={{
           pagination: {
-            paginationModel: { pageSize: 5, page: 0 },
+            paginationModel: { pageSize: 10, page: 0 },
           },
-          rowsPerPage: 5,
+          rowsPerPage: 10,
         }}
-        pageSizeOptions={[5, 10, 20]}
+        pageSizeOptions={[10, 20, 30]}
       />
-    </div>
+    </Box>
   );
 }
 

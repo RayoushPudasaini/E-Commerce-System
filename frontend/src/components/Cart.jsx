@@ -10,29 +10,13 @@ import {
 
 import { Link, useNavigate } from "react-router-dom";
 import PayButton from "./PayButton";
+import { Box } from "@mui/material";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  console.log(cart.cartItems);
-  // send all cartItems except description to backend from cart.cartItems
-  const cartItems = cart.cartItems.map((item) => {
-    return {
-      _id: item._id,
-      name: item.name,
-      image: item.image,
-      price: item.price,
-      cartQuantity: item.qty,
-      createdAt: item.createdAt,
-      updatedAt: item.updatedAt,
-      brand: "a",
-      desc: "a",
-      _v: item._v,
-    };
-  });
 
   useEffect(() => {
     dispatch(getTotals());
@@ -90,8 +74,21 @@ const Cart = () => {
                   <div className="cart-product">
                     <img src={cartItem.image.url} alt={cartItem.name} />
                     <div>
-                      <h3>{cartItem.name}</h3>
-                      <p>{cartItem.desc}</p>
+                      <h3
+                        style={{
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {cartItem.name}
+                      </h3>
+                      <h4>{cartItem.sizes}</h4>
+                      <p
+                        style={{
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {cartItem.desc}
+                      </p>
                       <button onClick={() => handleRemoveFromCart(cartItem)}>
                         Remove
                       </button>
@@ -115,6 +112,14 @@ const Cart = () => {
             <button className="clear-btn" onClick={() => handleClearCart()}>
               Clear Cart
             </button>
+            {/* {auth._id && (
+              <button
+                className="cash-in-hand"
+                onClick={() => navigate("/Cash")}
+              >
+                Cash in Hand
+              </button>
+            )} */}
             <div className="cart-checkout">
               <div className="subtotal">
                 <span>Subtotal</span>
@@ -122,7 +127,23 @@ const Cart = () => {
               </div>
               <p>Taxes and shipping calculated at checkout</p>
               {auth._id ? (
-                <PayButton cartItems={cart.cartItems} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <button
+                    className="cash-in-hand"
+                    onClick={() => navigate("/Cash")}
+                  >
+                    Cash on Delivery
+                  </button>
+                  <PayButton cartItems={cart.cartItems} />
+                </Box>
               ) : (
                 <button
                   className="cart-login"

@@ -54,7 +54,7 @@ export const productsCreate = createAsyncThunk(
     } catch (error) {
       ToastAlert({
         type: "error",
-        message: error.response.data.message,
+        message: error.response.data,
       });
 
       return rejectWithValue(error.response.data);

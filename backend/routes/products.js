@@ -51,11 +51,11 @@ class APIfeatures {
 
 router.post("/", async (req, res) => {
   try {
-    const { name, brand, desc, price, image } = req.body;
+    const { name, brand, desc, price, image, sizes } = req.body;
 
     if (!image) return res.status(400).send("Image is required");
 
-    if (!name || !brand || !desc || !price)
+    if (!name || !brand || !desc || !price || !sizes)
       return res.status(400).send("All fields are required");
 
     const uploadedResponse = await cloudinary.uploader.upload(image, {
@@ -68,6 +68,7 @@ router.post("/", async (req, res) => {
       brand,
       desc,
       price,
+      sizes,
       image: {
         public_id: uploadedResponse.public_id,
         url: uploadedResponse.secure_url,
@@ -92,8 +93,8 @@ router.delete("/:id", isAdmin, async (req, res) => {
 
 //edit product
 router.put("/:id", isAdmin, async (req, res) => {
+  console.log(req.body);
   // console.log(req.body.productImg);
-  console.log(req.body, "req.body.product.image.public_id");
   try {
     if (req.body.productImg) {
       const destroyResponse = await cloudinary.uploader.destroy(
@@ -125,7 +126,6 @@ router.put("/:id", isAdmin, async (req, res) => {
         }
       }
     } else {
-      console.log(false);
       const updatedProduct = await Product.findByIdAndUpdate(
         req.params.id,
         {

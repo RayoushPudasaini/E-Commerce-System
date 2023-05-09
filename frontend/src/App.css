@@ -175,15 +175,18 @@ html {
   font-size: 1.5rem;
   font-weight: 400;
   text-align: center;
+  text-transform: capitalize;
 }
 
 .product .details {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .product .details p {
+  text-transform: capitalize;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;

@@ -33,13 +33,17 @@ const Transactions = () => {
         <>
           <h3>Latest Transactions</h3>
 
-          {orders.map((order, index) => (
-            <Transaction key={index}>
-              <p>{order.shipping.name}</p>
-              <p>${(order.total / 100).toLocaleString()}</p>
-              <p>{moment(order.createdAt).fromNow()}</p>
-            </Transaction>
-          ))}
+          {orders
+            .slice(-5)
+            .reverse()
+
+            .map((order, index) => (
+              <Transaction key={index}>
+                <p>{order.shipping.name}</p>
+                <p>${(order.total / 100).toLocaleString()}</p>
+                <p>{moment(order.createdAt).fromNow()}</p>
+              </Transaction>
+            ))}
         </>
       )}
     </StyledTransactions>

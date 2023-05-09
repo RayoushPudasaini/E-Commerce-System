@@ -1,6 +1,7 @@
 const express = require("express");
 const Stripe = require("stripe");
 const { Order } = require("../models/order");
+const { auth } = require("../middleware/auth");
 
 require("dotenv").config();
 
@@ -8,7 +9,7 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 
 const router = express.Router();
 
-router.post("/create-checkout-session", async (req, res) => {
+router.post("/create-checkout-session", auth, async (req, res) => {
   // console.log("req.body", req.body);
   const customer = await stripe.customers.create({
     metadata: {

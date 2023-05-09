@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { url, setHeaders } from "./api";
+import ToastAlert from "../components/common/ToastAlert";
+import { toast } from "react-toastify";
 
 const initialState = {
   list: [],
   status: null,
+  orderCreateStatus: null,
 };
 
 export const ordersFetch = createAsyncThunk("orders/ordersFetch", async () => {
@@ -17,7 +20,7 @@ export const ordersFetch = createAsyncThunk("orders/ordersFetch", async () => {
 });
 export const fetchUserOrders = createAsyncThunk(
   "orders/user-orders",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         `${url}/orders/user-orders`,
@@ -25,14 +28,48 @@ export const fetchUserOrders = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      console.log(error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const orderCreate = createAsyncThunk(
+  "orders/orderCreate",
+  async (values, { getState, rejectWithValue }) => {
+    const state = getState();
+    // const productId = state.cart.cartItems.map((item) => item._id);
+    // const quantity = state.cart.cartItems.map((item) => item.cartQuantity);
+    const total = state.cart.cartTotalAmount;
+
+    const products = state.cart.cartItems.map((item) => ({
+      productId: item._id,
+      quantity: item.cartQuantity,
+    }));
+
+    const newOrder = {
+      products,
+      total,
+      ...values,
+    };
+
+    try {
+      const response = await axios.post(
+        `${url}/orders/cash-on-delivery`,
+        newOrder,
+        setHeaders()
+      );
+
+      return response.data;
+    } catch (error) {
+      <ToastAlert type="error" message={error.response.data.message} />;
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
 export const orderEdit = createAsyncThunk(
   "orders/orderEdit",
-  async (values, { getState }) => {
+  async (values, { getState, rejectWithValue }) => {
     const state = getState();
 
     let currentOrder = state.orders.list.filter(
@@ -53,7 +90,7 @@ export const orderEdit = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.log(error);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -61,7 +98,11 @@ export const orderEdit = createAsyncThunk(
 const orderSlice = createSlice({
   name: "orders",
   initialState,
-  reducers: {},
+  reducers: {
+    orderCreateReset: (state) => {
+      state.orderCreateStatus = null;
+    },
+  },
   extraReducers: {
     [ordersFetch.pending]: (state, action) => {
       state.status = "pending";
@@ -79,6 +120,7 @@ const orderSlice = createSlice({
     [fetchUserOrders.fulfilled]: (state, action) => {
       state.list = action.payload;
       state.status = "success";
+      state.orderCreateStatus = null;
     },
     [fetchUserOrders.rejected]: (state, action) => {
       state.status = "rejected";
@@ -95,6 +137,25 @@ const orderSlice = createSlice({
     },
     [orderEdit.rejected]: (state, action) => {
       state.status = "rejected";
+    },
+    [orderCreate.pending]: (state, action) => {
+      state.status = null;
+      state.orderCreateStatus = "pending";
+      state.list = [];
+    },
+    [orderCreate.fulfilled]: (state, action) => {
+      state.list.push(action.payload);
+      state.status = null;
+      state.orderCreateStatus = "success";
+      toast.success("Order created successfully", {
+        theme: "colored",
+        autoClose: 2500,
+        type: "success",
+      });
+    },
+    [orderCreate.rejected]: (state, action) => {
+      state.status = null;
+      state.orderCreateStatus = "rejected";
     },
   },
 });

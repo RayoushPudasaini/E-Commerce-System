@@ -31,6 +31,10 @@ import SearchProduct from "./SearchProduct";
 import OrderView from "./components/Details/OrderView";
 import UserOrderView from "./OrderView/UserOrderView";
 
+import Cash from "././pages/Cash";
+import AboutUs from "././pages/AboutUs";
+import ScrollRestoration from "./components/common/ScollRestoration";
+
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
 
@@ -38,12 +42,20 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <ToastContainer />
+        <ScrollRestoration />
 
         <NavBar />
         <main className="main__section">
           <Routes>
             <Route path="/" element={<RootLayout />}>
               <Route index element={<Home />} />
+              {!isAdmin && (
+                <>
+                  <Route path="/AboutUs" element={<AboutUs />} />{" "}
+                </>
+              )}
+
+              {/* Add this line */}
             </Route>
             <Route path="/search/:name" element={<SearchProduct />} />
             <Route path="/product/:id" element={<ViewProduct />} />
@@ -52,6 +64,7 @@ function App() {
                 <Route path="/cash-checkout" element={<CashCheckout />} />
                 <Route path="/checkout-success" element={<CheckoutSucess />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/cash" element={<Cash />} />
               </>
             )}
             <Route path="/Register" element={<Register />} />

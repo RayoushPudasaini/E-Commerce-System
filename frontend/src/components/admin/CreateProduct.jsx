@@ -2,11 +2,31 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { productsCreate } from "../../features/productsSlice";
 import Resizer from "react-image-file-resizer";
-
 import { PrimaryButton } from "./CommonStyled";
-
 import styled from "styled-components";
 import ToastAlert from "../common/ToastAlert";
+import {
+  Box,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
+
+export const sizes = ["S", "M", "L", "XL", "XXL"];
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
@@ -16,9 +36,18 @@ const CreateProduct = () => {
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState("");
   const [desc, setDesc] = useState("");
-  const [success, setSuccess] = useState(false);
 
-  console.log(productImg);
+  const [productSize, setProductSize] = useState(sizes);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setProductSize(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
 
   const handleProductImageUpload = (e) => {
     try {
@@ -64,9 +93,10 @@ const CreateProduct = () => {
       brand,
       price: priceN,
       desc,
+      sizes: productSize,
       image: productImg,
     };
-    dispatch(productsCreate({ data, setSuccess }));
+    dispatch(productsCreate({ data }));
   };
   return (
     <StyledCreateProduct>
@@ -89,6 +119,39 @@ const CreateProduct = () => {
           placeholder="Name"
           onChange={(e) => setName(e.target.value)}
         />
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="demo-multiple-chip-label" sx={{}}>
+            Available Sizes
+          </InputLabel>
+          <Select
+            labelId="demo-multiple-chip-label"
+            id="demo-multiple-chip"
+            multiple
+            value={productSize}
+            onChange={handleChange}
+            input={
+              <OutlinedInput
+                id="select-multiple-chip"
+                label="Available Sizes"
+              />
+            }
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {sizes.map((size) => (
+              <MenuItem key={size} value={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <input
           type="number"
           placeholder="Price"
@@ -140,7 +203,7 @@ const StyledForm = styled.form`
     border: 1px solid rgb(182, 182, 182);
     margin: 0.3rem 0;
     &:focus {
-      border: 2px solid rgb(0, 208, 255);
+      border: 1px solid rgb(0, 208, 255);
     }
   }
   select {

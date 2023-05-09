@@ -181,7 +181,7 @@ const Overview = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; ;
+  justify-content: space-between;
 `;
 
 const WidgetWrapper = styled.div`
