@@ -49,6 +49,7 @@ function App() {
           <Routes>
             <Route path="/" element={<RootLayout />}>
               <Route index element={<Home />} />
+
               {!isAdmin && (
                 <>
                   <Route path="/AboutUs" element={<AboutUs />} />{" "}

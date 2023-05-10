@@ -8,7 +8,7 @@ import axios from "axios";
 import { setHeaders, url } from "../../../features/api";
 import moment from "moment";
 import EditProduct from "../EditProduct";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 export default function ProductsList() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function ProductsList() {
   const deleteUser = React.useCallback(
     async function deleteUser(id) {
       if (!id) return;
-      if (window.confirm("Are you sure you want to delete this product?")) {
+      if (window.confirm("Are you sure you want to delete this user?")) {
         const res = await axios.delete(`${url}/users/${id}`, setHeaders());
 
         if (res.status === 200) {
@@ -37,7 +37,7 @@ export default function ProductsList() {
   const handleDelete = React.useCallback(
     (id) => {
       if (!id) return;
-      if (window.confirm("Are you sure you want to delete this product?")) {
+      if (window.confirm("Are you sure you want to delete this user?")) {
         dispatch(productDelete(id));
       }
     },
@@ -81,7 +81,15 @@ export default function ProductsList() {
         renderCell: (params) => {
           return (
             <Actions>
-              <Delete onClick={() => deleteUser(params.row.id)}>Delete</Delete>
+              <Button
+                disableElevation
+                variant="contained"
+                color="error"
+                size="small"
+                onClick={() => deleteUser(params.row.id)}
+              >
+                Delete
+              </Button>
             </Actions>
           );
         },
@@ -150,7 +158,7 @@ export default function ProductsList() {
       {
         field: "brand",
         headerName: "Brand",
-        width: 250,
+        width: 120,
         renderCell: (params) => {
           return (
             <Typography textTransform={"capitalize"}>
@@ -162,7 +170,7 @@ export default function ProductsList() {
       {
         field: "pDesc",
         headerName: "Description",
-        width: 340,
+        width: 400,
         renderCell: (params) => {
           return (
             <Typography
@@ -185,18 +193,37 @@ export default function ProductsList() {
         field: "actions",
         headerName: "Actions",
         sortable: false,
-        width: 170,
+        width: 250,
         renderCell: (params) => {
           return (
-            <Actions>
-              <Delete onClick={() => handleDelete(params.row.id)}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              <Button
+                disableElevation
+                variant="contained"
+                color="error"
+                size="small"
+                onClick={() => handleDelete(params.row.id)}
+              >
                 Delete
-              </Delete>
+              </Button>
               <EditProduct prodId={params.row.id} />
-              <View onClick={() => navigate(`/product/${params.row.id}`)}>
+              <Button
+                disableElevation
+                variant="contained"
+                color="success"
+                size="small"
+                onClick={() => navigate(`/product/${params.row.id}`)}
+              >
                 View
-              </View>
-            </Actions>
+              </Button>
+            </Box>
           );
         },
       },
@@ -271,24 +298,11 @@ const ImageContainer = styled.div`
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100px;
   gap: 0.7rem;
-  button {
-    border: none;
-    outline: none;
-    padding: 3px, 5px;
-    color: white;
-    border-radius: 3px;
-    cursor: pointer;
-  }
+  align-items: center;
 `;
 
 const Delete = styled.button`
   background-color: rgb(255, 77, 73);
-  padding: 5px 6px;
-`;
-
-const View = styled.button`
-  background-color: rgb(114, 225, 40);
   padding: 5px 6px;
 `;

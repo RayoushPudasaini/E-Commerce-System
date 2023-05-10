@@ -1,3 +1,4 @@
+// Import React and necessary hooks/components from other libraries
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
@@ -15,17 +16,26 @@ import {
 } from "@mui/material";
 import ToastAlert from "../components/common/ToastAlert";
 
+// Define the ViewProduct component
 const ViewProduct = () => {
+  // Get the product ID from the URL and initialize other hooks
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Get the product and authentication state from the Redux store
   const { item, status } = useSelector((state) => state?.products);
   const { isAdmin } = useSelector((state) => state?.auth);
+
+  // Destructure the product details
   const { name, desc, price, image, brand, sizes } = item;
 
+  // Initialize the selected size state variable
   const [selectedSize, setSelectedSize] = useState("");
 
+  // Define the function to handle adding the product to the cart
   const handleAddToCart = () => {
+    // Check if a size has been selected, and if not, display a toast message
     if (!selectedSize) {
       return ToastAlert({
         type: "error",
@@ -33,17 +43,23 @@ const ViewProduct = () => {
       });
     }
 
+    // Create a new product object with the selected size and dispatch it to the Redux store
     const product = {
       ...item,
       sizes: selectedSize,
     };
     dispatch(addToCart(product));
+
+    // Navigate to the cart page
     navigate("/cart");
   };
 
+  // Fetch the product details when the component mounts or when the ID changes
   useEffect(() => {
     dispatch(getProductById(id));
   }, [dispatch, id]);
+
+  // Render the product details and size options if the status is "success"
   return (
     <section
       className="products__details"

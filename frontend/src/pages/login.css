@@ -65,6 +65,7 @@ label {
   transition: background-color 0.2s ease-in-out;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
+  margin-left: -0.5rem !important;
 }
 
 .gap-top {

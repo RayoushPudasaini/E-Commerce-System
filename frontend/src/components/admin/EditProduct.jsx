@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -19,6 +18,7 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  Button,
 } from "@mui/material";
 import { sizes } from "./CreateProduct";
 
@@ -141,7 +141,15 @@ export default function EditProduct({ prodId }) {
 
   return (
     <div>
-      <Edit onClick={handleClickOpen}>Edit</Edit>
+      <Button
+        disableElevation
+        variant="contained"
+        color="primary"
+        size="small"
+        onClick={handleClickOpen}
+      >
+        Edit
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}

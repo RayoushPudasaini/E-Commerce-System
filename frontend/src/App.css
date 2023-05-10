@@ -16,6 +16,10 @@ html {
   min-height: 100vh;
 }
 
+.Toastify__toast-body > div {
+  text-transform: capitalize;
+}
+
 /*NavBar */
 .nav-bar {
   position: static;
