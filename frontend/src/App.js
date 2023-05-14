@@ -34,7 +34,6 @@ import UserOrderView from "./OrderView/UserOrderView";
 import Cash from "././pages/Cash";
 import AboutUs from "././pages/AboutUs";
 import ScrollRestoration from "./components/common/ScollRestoration";
-import Chatbot from "./components/Chatbot";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
