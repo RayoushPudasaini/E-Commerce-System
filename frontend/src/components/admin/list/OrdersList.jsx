@@ -23,7 +23,6 @@ export default function OrdersList() {
   }, [dispatch]);
 
   let rows = list?.map((order) => {
-    console.log(order);
     return {
       id: order._id,
       cName: order.shipping.name,

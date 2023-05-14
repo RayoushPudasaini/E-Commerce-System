@@ -81,6 +81,7 @@ export const deleteProductReview = createAsyncThunk(
         });
       }
       return response.data.product;
+      // return data;
     } catch (error) {
       ToastAlert({
         type: "error",
@@ -255,11 +256,12 @@ const productsSlice = createSlice({
         state.status = "pending";
       })
       .addCase(productDelete.fulfilled, (state, action) => {
+        console.log(state, "state");
         //immer
         state.status = "success";
-        state.items = state.items.filter(
-          (item) => item._id !== action.payload.product._id
-        );
+        state.items = state.items.filter((item) => {
+          return item._id !== action.payload._id;
+        });
       })
       .addCase(productDelete.rejected, (state, action) => {
         //immer

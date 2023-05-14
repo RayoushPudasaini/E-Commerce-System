@@ -108,7 +108,9 @@ router.put("/:id", isAdmin, async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(updateOrder);
+    const populateOrder = await updateOrder.populate("products.productId");
+
+    res.status(200).json(populateOrder);
   } catch (err) {
     res.status(500).json(err);
   }
