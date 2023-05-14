@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
@@ -39,11 +39,19 @@ function Chatbot() {
     const newMessages = [...messages, newMessage];
 
     setMessages(newMessages);
+
+    // Initial system message to determine ChatGPT functionality
+    // How it responds, how it talks, etc.
     setIsTyping(true);
     await processMessageToChatGPT(newMessages);
   };
 
   async function processMessageToChatGPT(chatMessages) {
+    // messages is an array of messages
+    // Format messages for chatGPT API
+    // API is expecting objects in format of { role: "user" or "assistant", "content": "message here"}
+    // So we need to reformat
+
     let apiMessages = chatMessages.map((messageObject) => {
       let role = "";
       if (messageObject.sender === "ChatGPT") {
@@ -54,42 +62,21 @@ function Chatbot() {
       return { role: role, content: messageObject.message };
     });
 
+    // Get the request body set up with the model we plan to use
+    // and the messages which we formatted above. We add a system message in the front to'
+    // determine how we want chatGPT to act.
     const apiRequestBody = {
       model: "gpt-3.5-turbo",
-      prompt: "Hello, ChatGPT!",
-      temperature: 0.7,
-      max_tokens: 60,
-      n: 1,
-      stop: "\n",
-      presence_penalty: 0.6,
-      frequency_penalty: 0.6,
-      time_out: 20,
+      messages: [
+        systemMessage, // The system message DEFINES the logic of our chatGPT
+        ...apiMessages, // The messages from our chat with ChatGPT
+      ],
     };
-
-    const res = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      apiRequestBody,
-      {
-        headers: {
-          Authorization: "Bearer " + API_KEY,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log(res.data);
-    setMessages([
-      ...chatMessages,
-      {
-        message: res.data.choices[0].text,
-        sender: "ChatGPT",
-      },
-    ]);
-    setIsTyping(false);
   }
 
   return (
-    <div className="Chatbot">
-      <div style={{ position: "relative", height: "400px", width: "400px" }}>
+    <div className="App">
+      <div style={{ position: "relative", height: "800px", width: "700px" }}>
         <MainContainer>
           <ChatContainer>
             <MessageList

@@ -17,26 +17,31 @@ export default function OrdersList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { list } = useSelector((state) => state.orders);
-  // console.log(list);
 
   React.useEffect(() => {
     dispatch(ordersFetch());
   }, [dispatch]);
 
   let rows = list?.map((order) => {
+    console.log(order);
     return {
       id: order._id,
       cName: order.shipping.name,
       amount: order.total?.toLocaleString(),
       dStatus: order.delivery_status,
       date: moment(order.createdAt).fromNow(),
+      deliveryDate: moment(order.delivery_date).format("YYYY-MM-DD"),
     };
   });
 
-  rows = rows?.reverse();
+  rows = rows?.slice(0).reverse();
 
   const columns = [
-    { field: "id", headerName: "ID", width: 220 },
+    {
+      field: "id",
+      headerName: "Id",
+      width: 150,
+    },
     {
       field: "cName",
       headerName: "Name",
@@ -73,10 +78,16 @@ export default function OrdersList() {
       width: 120,
     },
     {
+      field: "deliveryDate",
+      headerName: "DeliveryDate",
+
+      width: 110,
+    },
+    {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: 270,
+      width: 400,
       renderCell: (params) => {
         return (
           <Actions>

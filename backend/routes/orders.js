@@ -108,9 +108,9 @@ router.put("/:id", isAdmin, async (req, res) => {
       { new: true }
     );
 
-    res.status(200).send(updateOrder);
+    res.status(200).json(updateOrder);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json(err);
   }
 });
 
@@ -128,7 +128,9 @@ router.get("/", auth, async (req, res) => {
     //       })
     //       .limit(4)
     //   : await Order.find().sort({ _id: -1 });
-    const orders = await Order.find();
+    const orders = await Order.find()
+      .populate("products.productId userId", "-password")
+      .exec();
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);

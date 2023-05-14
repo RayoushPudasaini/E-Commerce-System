@@ -4,6 +4,7 @@ import { Menu, MenuItem, Box, IconButton, ListItemIcon } from "@mui/material";
 
 import { FiLogOut as Logout } from "react-icons/fi";
 import { MdInventory2 as Inventory } from "react-icons/md";
+import { FaUserAlt as User } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { logoutUser } from "../features/authSlice";
 import { useEffect, useState } from "react";
@@ -218,6 +219,16 @@ const NavBar = () => {
                 {/* <MenuItem onClick={handleClose}>
                   <Avatar /> Profile
                 </MenuItem> */}
+                <MenuItem
+                  sx={{
+                    textTransform: "capitalize",
+                  }}
+                >
+                  <ListItemIcon>
+                    <User fontSize="medium" />
+                  </ListItemIcon>
+                  {auth.name}
+                </MenuItem>
                 <MenuItem onClick={handleOrder}>
                   <ListItemIcon>
                     <Inventory fontSize="medium" />

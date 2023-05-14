@@ -38,6 +38,60 @@ export const getProductById = createAsyncThunk(
   }
 );
 
+export const createProductReview = createAsyncThunk(
+  "products/createProductReview",
+  async ({ data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${url}/products/review/${data.id}`,
+        data,
+        setHeaders()
+      );
+      if (response.status === 200) {
+        ToastAlert({
+          type: "success",
+          message: response.data.msg,
+        });
+      }
+      return response.data.product;
+    } catch (error) {
+      ToastAlert({
+        type: "error",
+        message: error.response.data.msg,
+      });
+
+      return rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+// delete product review
+export const deleteProductReview = createAsyncThunk(
+  "products/deleteProductReview",
+  async ({ data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${url}/products/review/${data.productId}/${data.reviewId}`,
+        setHeaders()
+      );
+      if (response.status === 200) {
+        ToastAlert({
+          type: "success",
+          message: response.data.msg,
+        });
+      }
+      return response.data.product;
+    } catch (error) {
+      ToastAlert({
+        type: "error",
+        message: error.response.data.msg,
+      });
+
+      return rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 export const productsCreate = createAsyncThunk(
   "products/productsCreate",
   async ({ data }, { rejectWithValue }) => {
@@ -106,13 +160,41 @@ export const productDelete = createAsyncThunk(
           message: response.data.message,
         });
       }
-      return response.data;
+      return response.data.product;
     } catch (error) {
       ToastAlert({
         type: "error",
         message: error.response.data.message,
       });
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// updated rpoduct review
+export const updateProductReview = createAsyncThunk(
+  "products/updateProductReview",
+  async ({ data }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `${url}/products/review/${data.productId}/${data.reviewId}`,
+        data,
+        setHeaders()
+      );
+      if (response.status === 200) {
+        ToastAlert({
+          type: "success",
+          message: response.data.msg,
+        });
+      }
+      return response.data.product;
+    } catch (error) {
+      ToastAlert({
+        type: "error",
+        message: error.response.data.msg,
+      });
+
+      return rejectWithValue(error.response.data.msg);
     }
   }
 );
@@ -206,6 +288,50 @@ const productsSlice = createSlice({
       .addCase(productsEdit.rejected, (state, action) => {
         //immer
         state.editStatus = "rejected";
+        state.error = action.payload;
+      })
+      .addCase(createProductReview.pending, (state, action) => {
+        //immer
+        state.status = "pending";
+      })
+      .addCase(createProductReview.fulfilled, (state, action) => {
+        //immer
+        state.status = "success";
+        state.item = action.payload;
+      })
+      .addCase(createProductReview.rejected, (state, action) => {
+        //immer
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      // delete product review
+      .addCase(deleteProductReview.pending, (state, action) => {
+        //immer
+        state.status = "pending";
+      })
+      .addCase(deleteProductReview.fulfilled, (state, action) => {
+        //immer
+        state.status = "success";
+        state.item = action.payload;
+      })
+      .addCase(deleteProductReview.rejected, (state, action) => {
+        //immer
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      // update product review
+      .addCase(updateProductReview.pending, (state, action) => {
+        //immer
+        state.status = "pending";
+      })
+      .addCase(updateProductReview.fulfilled, (state, action) => {
+        //immer
+        state.status = "success";
+        state.item = action.payload;
+      })
+      .addCase(updateProductReview.rejected, (state, action) => {
+        //immer
+        state.status = "rejected";
         state.error = action.payload;
       });
   },

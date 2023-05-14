@@ -23,6 +23,7 @@ const UserOrderView = () => {
       }),
       total: order.total,
       orderDate: moment(order.createdAt).format("DD/MM/YYYY/HH:mm"),
+      deliveryDate: moment(order.delivery_date).format("DD/MM/YYYY/HH:mm"),
       orderStatus: order.delivery_status,
       paymentStatus: order.payment_status,
       shippingAddress: `Nepal, ${order.shipping.address.city}, ${order.shipping.address.postal_code}`,

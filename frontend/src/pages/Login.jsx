@@ -119,11 +119,11 @@ const Login = () => {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-people-fill"
+              className="bi bi-people-fill"
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M6.003 10.8c.32-.433.726-.8 1.212-1.088C5.628 9.253 3 8.467 3 6a3 3 0 1 1 6 0c0 2.467-2.628 3.253-4.215 3.712.486.288.892.655 1.212 1.088zM1 12s1-2 3-2 3 2 3 2-1 1-3 1-3-1-3-1zm11 0s-1-2-3-2-3 2-3 2 1 1 3 1 3-1 3-1zm-6-6a2 2 0 1 0 .001-3.999A2 2 0 0 0 6 6zm6 0a2 2 0 1 0 .001-3.999A2 2 0 0 0 12 6z"
               />
             </svg>

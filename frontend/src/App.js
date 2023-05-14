@@ -34,6 +34,7 @@ import UserOrderView from "./OrderView/UserOrderView";
 import Cash from "././pages/Cash";
 import AboutUs from "././pages/AboutUs";
 import ScrollRestoration from "./components/common/ScollRestoration";
+import Chatbot from "./components/Chatbot";
 
 function App() {
   const { isAdmin, token } = useSelector((state) => state.auth);
@@ -58,8 +59,8 @@ function App() {
 
               {/* Add this line */}
             </Route>
-            <Route path="/search/:name" element={<SearchProduct />} />
-            <Route path="/product/:id" element={<ViewProduct />} />
+            <Route path="search/:name" element={<SearchProduct />} />
+            <Route path="product/:id" element={<ViewProduct />} />
             {!isAdmin && (
               <>
                 <Route path="/cash-checkout" element={<CashCheckout />} />

@@ -130,9 +130,6 @@ const OrderViewCard = ({ orderDetails }) => {
                 <Typography variant="h6" textTransform={"capitalize"} mt={0.5}>
                   Order Date: {order.orderDate}
                 </Typography>
-                <Typography variant="h6" textTransform={"capitalize"} mt={0.5}>
-                  Delivery Date: {order.deliveryDate}
-                </Typography>
                 <Divider sx={{ my: 2 }} />
                 <Typography variant="h6" gutterBottom fontWeight={"600"}>
                   Shipping Details

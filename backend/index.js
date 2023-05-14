@@ -12,6 +12,7 @@ const login = require("./routes/login");
 const register = require("./routes/register");
 const stripe = require("./routes/stripe");
 const products = require("./products");
+const chatbot = require("./routes/chatbot");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/products", productsRoute);
 app.use("/api/images", imagesRoute);
 app.use("/api/users", users);
 app.use("/api/orders", orders);
+app.use("/api/chat", chatbot);
 
 app.get("/products", (req, res) => {
   res.json(products);

@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import ToastAlert from "../components/common/ToastAlert";
+import Review from "../components/review/Review";
 
 // Define the ViewProduct component
 const ViewProduct = () => {
@@ -25,10 +26,10 @@ const ViewProduct = () => {
 
   // Get the product and authentication state from the Redux store
   const { item, status } = useSelector((state) => state?.products);
-  const { isAdmin } = useSelector((state) => state?.auth);
+  const { isAdmin, _id } = useSelector((state) => state?.auth);
 
   // Destructure the product details
-  const { name, desc, price, image, brand, sizes } = item;
+  const { name, desc, price, image, brand, sizes, comments } = item;
 
   // Initialize the selected size state variable
   const [selectedSize, setSelectedSize] = useState("");
@@ -60,6 +61,7 @@ const ViewProduct = () => {
   }, [dispatch, id]);
 
   // Render the product details and size options if the status is "success"
+
   return (
     <section
       className="products__details"
@@ -114,6 +116,8 @@ const ViewProduct = () => {
           </div>
         </div>
       )}
+
+      <Review />
     </section>
   );
 };
