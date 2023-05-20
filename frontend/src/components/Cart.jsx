@@ -8,6 +8,10 @@ import {
   removeFromCart,
 } from "../features/cartSlice";
 
+//useSelector is used to get the state from the redux store
+//useDispatch is used to dispatch an action to the redux store
+//useEffect is used to run a function when the component is mounted
+
 import { Link, useNavigate } from "react-router-dom";
 import PayButton from "./PayButton";
 import { Box } from "@mui/material";
@@ -37,6 +41,7 @@ const Cart = () => {
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
+
       {cart.cartItems.length === 0 ? (
         <div className="cart-empty">
           <p>Your cart is currently empty</p>
@@ -120,6 +125,7 @@ const Cart = () => {
                 Cash in Hand
               </button>
             )} */}
+
             <div className="cart-checkout">
               <div className="subtotal">
                 <span>Subtotal</span>
@@ -168,6 +174,7 @@ const Cart = () => {
                       d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
                     />
                   </svg>
+
                   <span>Continue Shopping</span>
                 </Link>
               </div>

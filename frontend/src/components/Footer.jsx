@@ -12,7 +12,7 @@ const Footer = () => {
               <h4>company</h4>
               <ul>
                 <li>
-                  <Link to="/">about us</Link>
+                  <Link to="/AboutUs">about us</Link>
                 </li>
                 <li>
                   <Link to="/">our services</Link>
@@ -38,10 +38,10 @@ const Footer = () => {
                   <Link to="/">returns</Link>
                 </li>
                 <li>
-                  <Link to="/">order status</Link>
+                  <Link to="">order status</Link>
                 </li>
                 <li>
-                  <Link to="/">payment options</Link>
+                  <Link to="/cart">payment options</Link>
                 </li>
               </ul>
             </div>

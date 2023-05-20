@@ -45,118 +45,122 @@ const StyledGridItem = styled(Grid)({
 const OrderViewCard = ({ orderDetails }) => {
   return (
     <StyledCard>
-      {orderDetails?.map((order) => (
-        <CardContent key={order.id}>
-          <Paper
-            sx={{
-              border: 1,
-              borderColor: "divider",
-              borderRadius: 1,
-              boxShadow: 1,
-              bgcolor: "background.paper",
-              p: 2,
-              "&:hover": {
-                borderColor: "#4b70e2",
-                transition: "all 1s in-out",
-                boxShadow: 2,
-              },
-            }}
-          >
-            <Grid container spacing={10} alignItems="center">
-              <Grid item xs={12} md={5}>
-                {order?.product.map((product) => (
-                  <Box key={product.id}>
-                    <Box component={"div"} key={product.id}>
-                      <Link
-                        to={`/product/${product.id}`}
-                        style={{
-                          textDecoration: "none",
-                        }}
-                      >
-                        <Typography
-                          variant="h5"
-                          gutterBottom
-                          fontWeight={"600"}
-                          sx={{
-                            cursor: "pointer",
-                            textTransform: "capitalize",
-
-                            "&:hover": {
-                              color: "#1976d2",
-                              textDecoration: "underline",
-                              transition: "all 1s in-out",
-                            },
+      {orderDetails
+        ?.slice(0)
+        ?.reverse()
+        ?.map((order) => (
+          <CardContent key={order.id}>
+            <Paper
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 1,
+                boxShadow: 1,
+                bgcolor: "background.paper",
+                p: 2,
+                "&:hover": {
+                  borderColor: "#4b70e2",
+                  transition: "all 1s in-out",
+                  boxShadow: 2,
+                },
+              }}
+            >
+              <Grid container spacing={10} alignItems="center">
+                <Grid item xs={12} md={5}>
+                  {order?.product.map((product) => (
+                    <Box key={product.id}>
+                      <Box component={"div"} key={product.id}>
+                        <Link
+                          to={`/product/${product.id}`}
+                          style={{
+                            textDecoration: "none",
                           }}
                         >
-                          {product.productName}
-                        </Typography>{" "}
-                      </Link>
-                    </Box>
-                    <Paper
-                      sx={{
-                        my: 2,
-                      }}
-                    >
-                      <StyledCardMedia
-                        component="img"
-                        image={product.productImage}
-                        alt={product.productName}
-                      />
-                    </Paper>
-                  </Box>
-                ))}
-              </Grid>
+                          <Typography
+                            variant="h5"
+                            gutterBottom
+                            fontWeight={"600"}
+                            sx={{
+                              cursor: "pointer",
+                              textTransform: "capitalize",
 
-              <StyledGridItem item xs={12} md={7}>
-                <Box>
+                              "&:hover": {
+                                color: "#1976d2",
+                                textDecoration: "underline",
+                                transition: "all 1s in-out",
+                              },
+                            }}
+                          >
+                            {product.productName}
+                          </Typography>{" "}
+                        </Link>
+                      </Box>
+                      <Paper
+                        sx={{
+                          my: 2,
+                        }}
+                      >
+                        <StyledCardMedia
+                          component="img"
+                          image={product.productImage}
+                          alt={product.productName}
+                        />
+                      </Paper>
+                    </Box>
+                  ))}
+                </Grid>
+
+                <StyledGridItem item xs={12} md={7}>
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      component={"span"}
+                      textTransform={"capitalize"}
+                    >
+                      Order Status:
+                    </Typography>
+                    <Box component={"span"} ml={2}>
+                      {order.orderStatus === "pending" ? (
+                        <Chip label="Pending" color="secondary" />
+                      ) : order.orderStatus === "dispatched" ? (
+                        <Chip label="Dispatched" color="primary" />
+                      ) : order.orderStatus === "delivered" ? (
+                        <Chip label="Delivered" color="success" />
+                      ) : null}
+                    </Box>
+                  </Box>
+
                   <Typography
                     variant="h6"
-                    component={"span"}
                     textTransform={"capitalize"}
+                    mt={0.5}
                   >
-                    Order Status:
+                    Order Date: {order.orderDate}
                   </Typography>
-                  <Box component={"span"} ml={2}>
-                    {order.orderStatus === "pending" ? (
-                      <Chip label="Pending" color="secondary" />
-                    ) : order.orderStatus === "dispatched" ? (
-                      <Chip label="Dispatched" color="primary" />
-                    ) : order.orderStatus === "delivered" ? (
-                      <Chip label="Delivered" color="success" />
-                    ) : null}
-                  </Box>
-                </Box>
-
-                <Typography variant="h6" textTransform={"capitalize"} mt={0.5}>
-                  Order Date: {order.orderDate}
-                </Typography>
-                <Typography variant="h6" textTransform={"capitalize"} mt={0.5}>
-                  Delivery Date: {order.deliveryDate}
-                </Typography>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" gutterBottom fontWeight={"600"}>
-                  Shipping Details
-                </Typography>
-                <Typography variant="h6" textTransform={"capitalize"}>
-                  Payment Status: {order.paymentStatus}
-                </Typography>
-                <Typography variant="h6" textTransform={"capitalize"}>
-                  Name: {order.customerName}
-                </Typography>
-                <Typography variant="h6" textTransform={"capitalize"}>
-                  Email: {order.customerEmail}
-                </Typography>
-                <Typography variant="h6" textTransform={"capitalize"}>
-                  Phone Number: {order.phoneNumber}
-                </Typography>
-                <Typography variant="h6" textTransform={"capitalize"}>
-                  Shipping Address: {order.shippingAddress}
-                </Typography>
-              </StyledGridItem>
-            </Grid>
-          </Paper>
-        </CardContent>
-      ))}
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="h6" gutterBottom fontWeight={"600"}>
+                    Shipping Details
+                  </Typography>
+                  <Typography variant="h6" textTransform={"capitalize"}>
+                    Payment Status: {order.paymentStatus}
+                  </Typography>
+                  <Typography variant="h6" textTransform={"capitalize"}>
+                    Name: {order.customerName}
+                  </Typography>
+                  <Typography variant="h6" textTransform={"capitalize"}>
+                    Email: {order.customerEmail}
+                  </Typography>
+                  <Typography variant="h6" textTransform={"capitalize"}>
+                    Phone Number: {order.phoneNumber}
+                  </Typography>
+                  <Typography variant="h6" textTransform={"capitalize"}>
+                    Shipping Address: {order.shippingAddress}
+                  </Typography>
+                </StyledGridItem>
+              </Grid>
+            </Paper>
+          </CardContent>
+        ))}
     </StyledCard>
   );
 };

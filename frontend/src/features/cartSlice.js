@@ -11,6 +11,7 @@ const initialState = {
 };
 
 const cartSlice = createSlice({
+  // createsSlice takes an object as an argument
   name: "cart",
   initialState,
   reducers: {

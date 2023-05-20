@@ -48,7 +48,7 @@ class APIfeatures {
   }
 }
 
-//CREATE
+//CREATing a product
 
 router.post("/", async (req, res) => {
   try {
@@ -81,9 +81,11 @@ router.post("/", async (req, res) => {
     res.status(500).json(error.message);
   }
 });
-// //DELETE
+
+// //DELETing THE PRODUCT
 
 router.delete("/:id", isAdmin, async (req, res) => {
+  //ID PARAMATER IS GIVEN TO DELETE THE PRODUCT
   try {
     const product = await Product.findByIdAndDelete(req.params.id).exec();
 
@@ -93,20 +95,28 @@ router.delete("/:id", isAdmin, async (req, res) => {
   }
 });
 
-//edit product
+//EIDTING THE PRODUCT
+
 router.put("/:id", isAdmin, async (req, res) => {
   console.log(req.body);
-  // console.log(req.body.productImg);
+
   try {
     if (req.body.productImg) {
+      // to check if the request body as a  product image
+
       const destroyResponse = await cloudinary.uploader.destroy(
-        req.body.product.currentProd.image.public_id
+        // destroy the image
+
+        req.body.product.currentProd.image.public_id //represents the public id of the image
       );
-      // console.log(destroyResponse, "destroyResponse");
+
+      //if the image is destroyed then upload the new image
 
       if (destroyResponse) {
         const uploadedResponse = await cloudinary.uploader.upload(
-          req.body.productImg,
+          //after destroy a new image is uploaded
+
+          req.body.productImg, //passing argument which contains : image,upload_preset,folder
           {
             upload_present: "online-shop",
             folder: "online-shop",
@@ -115,9 +125,12 @@ router.put("/:id", isAdmin, async (req, res) => {
 
         if (uploadedResponse) {
           const updatedProduct = await Product.findByIdAndUpdate(
+            //find the product by id which is req.params.id
+
             req.params.id,
             {
               $set: {
+                //set the product with the new values
                 ...req.body.product,
                 image: uploadedResponse,
               },
@@ -132,6 +145,7 @@ router.put("/:id", isAdmin, async (req, res) => {
         req.params.id,
         {
           $set: {
+            //set the product with the new values
             ...req.body.product,
           },
         },
@@ -149,7 +163,7 @@ router.put("/:id", isAdmin, async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const query = req.query;
-    const features = new APIfeatures(Product.find(), query)
+    const features = new APIfeatures(Product.find(), query) //APIfeatures is a class which is used to filter,sort and paginate the products
       .filtering()
       .sorting()
       .paginating();
@@ -166,31 +180,33 @@ router.get("/", async (req, res) => {
 
 router.get("/find/:id", async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id); //findByID fetches the product from the database
 
-    // const product = await products.find(
-    //   (product) => product.id === parseInt(req.params.id)
-    // );
     res.status(200).send(product);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
+//Adding a review to the product
+
 router.post("/review/:id", auth, async (req, res) => {
   try {
     const { rating, comment } = req.body;
+    //Validation
     if (!rating || !comment) {
       return res.status(400).json({ msg: "Invalid Comment." });
     }
+    //Additional validation
+
     if (comment.length < 3) {
       return res.status(400).json({ msg: "Comment Must be 3 Lengths Long." });
     }
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id); //Product.findById fetches the product from the database with id
     if (!product) {
       return res.status(400).json({ msg: "Product Not Found." });
     }
-    const user = req.user._id;
+    const user = req.user._id; //req.user._id used to get the id of the user who is logged in
     const author = await User.findById(user);
 
     product.comments.push({
@@ -199,14 +215,16 @@ router.post("/review/:id", auth, async (req, res) => {
       author,
     });
 
-    await product.save();
+    await product.save(); // to save the updated product with new reviews
+
     res.json({ msg: "Successfully Commented.", product });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
 });
 
-// delete review from product
+// Delete review from product
+
 router.delete("/review/:id/:reviewId", auth, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -219,15 +237,17 @@ router.delete("/review/:id/:reviewId", auth, async (req, res) => {
     if (!review) {
       return res.status(400).json({ msg: "Review Not Found." });
     }
-    const user = req.user._id;
+    const user = req.user._id; // to get the id of the user who is logged in
     if (review.author._id.toString() !== user) {
       return res.status(400).json({ msg: "User Not Authorized." });
     }
     const removeIndex = product.comments
       .map((comment) => comment._id)
       .indexOf(req.params.reviewId);
-    product.comments.splice(removeIndex, 1);
+
+    product.comments.splice(removeIndex, 1); //spice() to remove the review from the product
     await product.save();
+
     res.json({ msg: "Successfully Deleted.", product });
   } catch (error) {
     return res.status(500).json({ msg: error.message });
@@ -235,6 +255,7 @@ router.delete("/review/:id/:reviewId", auth, async (req, res) => {
 });
 
 // update review from product
+
 router.patch("/review/:id/:reviewId", auth, async (req, res) => {
   try {
     const { rating, comment } = req.body;

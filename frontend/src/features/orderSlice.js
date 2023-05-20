@@ -10,6 +10,8 @@ const initialState = {
   orderCreateStatus: null,
 };
 
+//creating Async thunks for fetching user orders and creating orders and editing orders:
+
 export const ordersFetch = createAsyncThunk("orders/ordersFetch", async () => {
   try {
     const response = await axios.get(`${url}/orders`, setHeaders());
@@ -94,6 +96,7 @@ export const orderEdit = createAsyncThunk(
     }
   }
 );
+//It defines the name as 'orders' and including the reducers and extra reducers
 
 const orderSlice = createSlice({
   name: "orders",
@@ -103,6 +106,7 @@ const orderSlice = createSlice({
       state.orderCreateStatus = null;
     },
   },
+  //For handling asynchronous actions
   extraReducers: {
     [ordersFetch.pending]: (state, action) => {
       state.status = "pending";

@@ -33,6 +33,8 @@ import UserOrderView from "./OrderView/UserOrderView";
 
 import Cash from "././pages/Cash";
 import AboutUs from "././pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
+
 import ScrollRestoration from "./components/common/ScollRestoration";
 
 function App() {
@@ -53,6 +55,7 @@ function App() {
               {!isAdmin && (
                 <>
                   <Route path="/AboutUs" element={<AboutUs />} />{" "}
+                  <Route path="/contactus" element={<ContactUs />} />
                 </>
               )}
 

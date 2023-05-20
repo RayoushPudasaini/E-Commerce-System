@@ -64,14 +64,17 @@ const NavBar = () => {
     <>
       <nav className="nav-bar">
         <Link to="/">
-          <h2>JuttaPasal</h2>
+          <h2>
+            <span>J</span>utta
+            <span>P</span>asal
+          </h2>
         </Link>
         <Link to="/AboutUs">
           <p>About Us</p>
         </Link>
 
-        <Link to="/">
-          <p>Policy</p>
+        <Link to="/ContactUs">
+          <p>Contact Us</p>
         </Link>
 
         <Link to="/">
@@ -229,12 +232,14 @@ const NavBar = () => {
                   </ListItemIcon>
                   {auth.name}
                 </MenuItem>
-                <MenuItem onClick={handleOrder}>
-                  <ListItemIcon>
-                    <Inventory fontSize="medium" />
-                  </ListItemIcon>
-                  View Order
-                </MenuItem>
+                {!auth.isAdmin && (
+                  <MenuItem onClick={handleOrder}>
+                    <ListItemIcon>
+                      <Inventory fontSize="medium" />
+                    </ListItemIcon>
+                    View Order
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <Logout fontSize="medium" />

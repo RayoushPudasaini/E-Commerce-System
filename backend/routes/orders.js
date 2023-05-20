@@ -5,7 +5,8 @@ const router = require("express").Router();
 const transporter = require("../config/emailConfig");
 const { Product } = require("../models/product");
 
-//order in cash on delivery
+//Order in Cash on Delivery
+
 router.post("/cash-on-delivery", auth, async (req, res) => {
   try {
     const orderData = {
@@ -43,6 +44,7 @@ router.post("/cash-on-delivery", auth, async (req, res) => {
       _id: { $in: req.body.products.map((item) => item.productId) },
     });
     await transporter.sendMail({
+      //transporter.sendMail used for sending emails
       from: process.env.EMAIL_FROM,
       to: req.body.email,
       subject: "Order Details",
@@ -83,7 +85,8 @@ router.post("/cash-on-delivery", auth, async (req, res) => {
   }
 });
 
-//get orders by user
+//Get orders by user
+
 router.get("/user-orders", auth, async (req, res) => {
   try {
     // populate products and user
@@ -152,7 +155,8 @@ router.get("/findOne/:id", auth, async (req, res) => {
   }
 });
 
-//get user stats
+//Get user stats for admin
+
 router.get("/stats", auth, isAdmin, async (req, res) => {
   const previousMonth = moment()
     .month(moment().month() - 1)
@@ -181,7 +185,8 @@ router.get("/stats", auth, isAdmin, async (req, res) => {
     res.status(500).send(err);
   }
 });
-//get order stats
+//Get order stats for admin
+
 router.get("/stats", isAdmin, async (req, res) => {
   const previousMonth = moment()
     .month(moment().month() - 1)
@@ -210,7 +215,9 @@ router.get("/stats", isAdmin, async (req, res) => {
     res.status(500).send(err);
   }
 });
-//get income stats
+
+//Get income stats for admin
+
 router.get("/income/stats", isAdmin, async (req, res) => {
   const previousMonth = moment()
     .month(moment().month() - 1)
@@ -240,7 +247,8 @@ router.get("/income/stats", isAdmin, async (req, res) => {
   }
 });
 
-// Get one week sales
+// Get one week sales for admin
+
 router.get("/week-sales", isAdmin, auth, async (req, res) => {
   const last7Days = moment()
     .day(moment().day() - 7)

@@ -8,9 +8,11 @@ require("dotenv").config();
 const stripe = Stripe(process.env.STRIPE_KEY);
 
 const router = express.Router();
-
+//Creating Stripe endpoints
+//API to create a new checkout session
 router.post("/create-checkout-session", auth, async (req, res) => {
-  // console.log("req.body", req.body);
+  //creates a customer object using stripe API
+
   const customer = await stripe.customers.create({
     metadata: {
       userId: req.body.userId,
@@ -35,11 +37,12 @@ router.post("/create-checkout-session", auth, async (req, res) => {
       quantity: item.cartQuantity,
     };
   });
+  //To create a new checkout session
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     shipping_address_collection: {
-      allowed_countries: ["US", "CA", "KE"],
+      allowed_countries: ["US", "CA", "NP"],
     },
     shipping_options: [
       {
@@ -50,7 +53,9 @@ router.post("/create-checkout-session", auth, async (req, res) => {
             currency: "usd",
           },
           display_name: "Free shipping",
+
           // Delivers between 5-7 business days
+
           delivery_estimate: {
             minimum: {
               unit: "business_day",
@@ -86,7 +91,7 @@ router.post("/create-checkout-session", auth, async (req, res) => {
       },
     ],
     phone_number_collection: {
-      enabled: true,
+      enabled: false,
     },
     line_items,
     mode: "payment",
@@ -111,8 +116,6 @@ const createOrder = async (customer, data) => {
       };
     });
 
-    console.log("products", products);
-
     const newOrder = new Order({
       userId: customer.metadata.userId,
       customerId: data.customer,
@@ -130,6 +133,7 @@ const createOrder = async (customer, data) => {
     res.status(500).json(err.message);
   }
 };
+//Second API to retrieve the session object
 
 // Stripe webhoook
 
@@ -171,6 +175,7 @@ router.post(
 
     // Handle the checkout.session.completed event
     if (eventType === "checkout.session.completed") {
+      //it calls the createOrder function to create and save the order
       stripe.customers
         .retrieve(data.customer)
         .then(async (customer) => {

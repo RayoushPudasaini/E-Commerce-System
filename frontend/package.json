@@ -5,6 +5,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.0.0",
     "@chatscope/chat-ui-kit-react": "^1.10.1",
+    "@emailjs/browser": "^3.11.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.15",

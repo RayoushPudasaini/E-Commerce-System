@@ -17,11 +17,11 @@
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  background-color: white;
+
   padding: 3rem 2rem;
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
   margin-top: 2rem;
 }
 
@@ -31,21 +31,19 @@ input[type="password"] {
   padding: 0.5rem;
   margin-bottom: 1rem;
   font-size: 1.2rem;
-  border: 1px solid rgb(77, 140, 174);
+
   border-radius: 5px;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.2s ease-in-out;
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus {
-  border-color: rgb(63, 121, 150);
+  border: 2px solid rgba(0, 206, 158, 1);
 }
 
 label {
   font-size: 1.2rem;
-  color: rgb(77, 140, 174);
+
   margin-bottom: 0.5rem;
 }
 

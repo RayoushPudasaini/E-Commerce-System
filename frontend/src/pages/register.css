@@ -43,15 +43,14 @@ input[type="password"] {
   margin-bottom: 20px;
   font-size: 18px;
   border-radius: 5px;
-  border: 1px solid lightgray;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
   transition: border-color 0.2s ease-in-out;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
-  border-color: rgb(63, 121, 150);
+  border: 2px solid rgba(0, 206, 158, 1);
 }
 
 button[type="submit"] {

@@ -26,10 +26,10 @@ const ViewProduct = () => {
 
   // Get the product and authentication state from the Redux store
   const { item, status } = useSelector((state) => state?.products);
-  const { isAdmin, _id } = useSelector((state) => state?.auth);
+  const { isAdmin } = useSelector((state) => state?.auth);
 
   // Destructure the product details
-  const { name, desc, price, image, brand, sizes, comments } = item;
+  const { name, desc, price, image, brand, sizes } = item;
 
   // Initialize the selected size state variable
   const [selectedSize, setSelectedSize] = useState("");
