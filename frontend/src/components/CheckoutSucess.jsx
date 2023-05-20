@@ -12,7 +12,7 @@ const CheckoutSuccess = () => {
         Your order has been successfully processed and will be shipped soon.
       </p>
       <p>
-        You can track your order status in the "My Orders" section of your
+        You can track your order status in the "View Orders" section of your
         account.
       </p>
       <button onClick={() => navigate("/")}>Continue Shopping</button>
