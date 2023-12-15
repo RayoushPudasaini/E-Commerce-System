@@ -60,8 +60,8 @@ router.post("/", async (req, res) => {
       return res.status(400).send("All fields are required");
 
     const uploadedResponse = await cloudinary.uploader.upload(image, {
-      upload_present: "online-shop",
-      folder: "online-shop",
+      upload_present: "",
+      folder: "",
     });
 
     const product = new Product({
@@ -118,8 +118,8 @@ router.put("/:id", isAdmin, async (req, res) => {
 
           req.body.productImg, //passing argument which contains : image,upload_preset,folder
           {
-            upload_present: "online-shop",
-            folder: "online-shop",
+            upload_present: "",
+            folder: "",
           }
         );
 
